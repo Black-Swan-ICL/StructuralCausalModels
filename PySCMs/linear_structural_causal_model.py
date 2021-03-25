@@ -55,6 +55,8 @@ class LinearStructuralCausalModel(StructuralCausalModel):
                     else:
                         res = u.astype(float)
                         for j in range(len(indices_rhs)):
+                            # TODO are we sure the right coeff will always go
+                            #  with the right input ?
                             res += matrix[indices_rhs[j], index_lhs] * inputs[j]
                         return res
 
@@ -77,45 +79,3 @@ class LinearStructuralCausalModel(StructuralCausalModel):
         )
 
         return linear_scm
-# if __name__ == '__main__':
-#
-#     from scipy.stats import randint
-#
-#     _constant_0 = 1
-#     _constant_1 = 0
-#     _constant_2 = 100
-#     _constant_3 = 0
-#
-#     nb_samples = 5
-#
-#     def matrix_coefficients():
-#         """
-#         The matrix of coefficients from which to build the linear SCM (i.e. its
-#         weighted adjacency matrix) modulo the exogenous variables.
-#         """
-#         mat = np.asarray([
-#             [0, -2, 4, 2],
-#             [0, 0, -8, 0],
-#             [0, 0, 0, 0],
-#             [0, 0.5, 1.5, 0]
-#         ])
-#
-#         return mat
-#
-#
-#     def exogenous_variables():
-#         exogenous_variables = [randint(low=_constant_0, high=(_constant_0 + 1)),
-#                                randint(low=_constant_1, high=(_constant_1 + 1)),
-#                                randint(low=_constant_2, high=(_constant_2 + 1)),
-#                                randint(low=_constant_3, high=(_constant_3 + 1))]
-#
-#         return exogenous_variables
-#
-#
-#     linear_scm = LinearStructuralCausalModel.create_from_coefficient_matrix(
-#         name='test linear scm',
-#         matrix=matrix_coefficients(),
-#         causal_order=[0, 3, 1, 2],
-#         exogenous_variables=exogenous_variables())
-#
-#     actual_data = linear_scm.generate_data(nb_samples).values
