@@ -16,7 +16,6 @@ class InvalidIntervention(Exception):
 
 # TODO document
 # TODO allow cycles in init yes/no ?
-# TODO handle counterfactuals ?
 # TODO validation of attributes
 class StructuralCausalModel:
 
