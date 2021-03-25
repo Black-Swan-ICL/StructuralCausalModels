@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 
-from graph_utilities import validate_adjacency_matrix, \
+from PySCMs.graph_utilities import validate_adjacency_matrix, \
     validate_directed_graph, \
     validate_directed_acyclic_graph
 

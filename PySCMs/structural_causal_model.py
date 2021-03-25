@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from graph_utilities import validate_directed_acyclic_graph
+from PySCMs.graph_utilities import validate_directed_acyclic_graph
 
 
 class CyclicityWarning(UserWarning):
