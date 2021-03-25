@@ -5,6 +5,7 @@ from PySCMs.graph_utilities import validate_directed_acyclic_graph
 
 
 class CyclicityWarning(UserWarning):
+
     pass
 
 
