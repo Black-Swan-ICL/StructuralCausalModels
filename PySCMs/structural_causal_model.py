@@ -15,7 +15,8 @@ class InvalidIntervention(Exception):
 
 
 # TODO document
-# TODO allow cycles in init yes/no
+# TODO allow cycles in init yes/no ?
+# TODO handle counterfactuals ?
 # TODO validation of attributes
 class StructuralCausalModel:
 
@@ -84,5 +85,3 @@ class StructuralCausalModel:
         self.structural_equations[index_target_node] = new_structural_equation
 
         return self
-
-    # TODO counterfactual handling ?
