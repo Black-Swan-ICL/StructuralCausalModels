@@ -7,7 +7,7 @@ README = (HERE / 'README.md').read_text()
 
 setup(
     name='PySCMs',
-    version='0.1.0',
+    version='1.0.0',
     description='A Python package for Structural Causal Models.',
     long_description=README,
     long_description_content_type='text/markdown',
