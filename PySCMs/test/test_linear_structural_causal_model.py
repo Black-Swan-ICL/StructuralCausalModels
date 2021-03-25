@@ -3,7 +3,8 @@ import numpy as np
 
 from scipy.stats import randint
 
-from PySCMs.linear_structural_causal_model import LinearStructuralCausalModel
+from PySCMs.linear_structural_causal_model import LinearStructuralCausalModel, \
+    InvalidWeightedAdjacencyMatrix, InvalidNumberOfExogenousVariables
 
 
 _constant_0 = 1
@@ -35,6 +36,12 @@ def matrix_coefficients():
 
 
 @pytest.fixture
+def causal_order():
+
+    return [0, 3, 1, 2]
+
+
+@pytest.fixture
 def exogenous_variables():
 
     exogenous_variables = [randint(low=_constant_0, high=(_constant_0 + 1)),
@@ -60,13 +67,27 @@ def linear_scm_data_generation_function(nb_samples, matrix_coefficients,
     return data
 
 
+@pytest.fixture
+def non_directed_graph_weighted_adjacency_matrix():
+
+    mat = np.asarray([
+        [0, -2, 4, 2],
+        [1, 0, -8, 0],
+        [0, 0, 0, 0],
+        [0, 0.5, 1.5, 0]
+    ])
+
+    return mat
+
+
 def test_create_from_coefficient_matrix(nb_samples, matrix_coefficients,
-                                        exogenous_variables,
+                                        causal_order, exogenous_variables,
                                         linear_scm_data_generation_function):
 
     linear_scm = LinearStructuralCausalModel.create_from_coefficient_matrix(
         name='test linear scm',
         matrix=matrix_coefficients,
+        causal_order=causal_order,
         exogenous_variables=exogenous_variables)
 
     actual_data = linear_scm.generate_data(nb_samples).values
@@ -74,3 +95,27 @@ def test_create_from_coefficient_matrix(nb_samples, matrix_coefficients,
     expected_data = linear_scm_data_generation_function
 
     assert np.equal(actual_data, expected_data).all()
+
+
+def test_non_directed_graph_weighted_adjacency_matrix_crashes(
+        non_directed_graph_weighted_adjacency_matrix, causal_order,
+        exogenous_variables):
+
+    with pytest.raises(InvalidWeightedAdjacencyMatrix):
+        LinearStructuralCausalModel.create_from_coefficient_matrix(
+            name='test linear scm',
+            matrix=non_directed_graph_weighted_adjacency_matrix,
+            causal_order=causal_order,
+            exogenous_variables=exogenous_variables)
+
+
+def test_incorrect_number_of_exogenous_variables_crashes(matrix_coefficients,
+                                                         causal_order,
+                                                         exogenous_variables):
+
+    with pytest.raises(InvalidNumberOfExogenousVariables):
+        LinearStructuralCausalModel.create_from_coefficient_matrix(
+            name='test linear scm',
+            matrix=matrix_coefficients,
+            causal_order=causal_order,
+            exogenous_variables=exogenous_variables[:-1])
