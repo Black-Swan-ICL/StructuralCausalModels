@@ -3,8 +3,8 @@ import numpy as np
 
 from scipy.stats import randint
 
-from PySCMs.structural_equation import StructuralEquation
-from PySCMs.structural_causal_model import StructuralCausalModel, \
+from StructuralCausalModels.structural_equation import StructuralEquation
+from StructuralCausalModels.structural_causal_model import StructuralCausalModel, \
     InvalidIntervention
 
 _constant_0 = 1

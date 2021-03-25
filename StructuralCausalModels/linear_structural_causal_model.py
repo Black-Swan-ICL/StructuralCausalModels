@@ -1,8 +1,8 @@
 import numpy as np
 
-from PySCMs.graph_utilities import validate_directed_graph
-from PySCMs.structural_equation import StructuralEquation
-from PySCMs.structural_causal_model import StructuralCausalModel
+from StructuralCausalModels.graph_utilities import validate_directed_graph
+from StructuralCausalModels.structural_equation import StructuralEquation
+from StructuralCausalModels.structural_causal_model import StructuralCausalModel
 
 
 class InvalidWeightedAdjacencyMatrix(Exception):

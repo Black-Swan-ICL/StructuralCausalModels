@@ -3,7 +3,7 @@ import numpy as np
 
 from scipy.stats import randint
 
-from PySCMs.linear_structural_causal_model import LinearStructuralCausalModel, \
+from StructuralCausalModels.linear_structural_causal_model import LinearStructuralCausalModel, \
     InvalidWeightedAdjacencyMatrix, InvalidNumberOfExogenousVariables
 
 
