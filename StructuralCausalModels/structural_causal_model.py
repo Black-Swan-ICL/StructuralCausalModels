@@ -17,6 +17,7 @@ class InvalidIntervention(Exception):
 # TODO document
 # TODO allow cycles in init yes/no ?
 # TODO validation of attributes
+# TODO add string representation of Structural Causal Model
 class StructuralCausalModel:
 
     def __init__(self, name, nb_var, structural_equations):

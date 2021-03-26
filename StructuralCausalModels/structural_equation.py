@@ -1,4 +1,5 @@
 # TODO document
+# TODO add string representation of Structural Equation
 class StructuralEquation:
 
     def __init__(self, index_lhs, indices_rhs, exogenous_variable, function):

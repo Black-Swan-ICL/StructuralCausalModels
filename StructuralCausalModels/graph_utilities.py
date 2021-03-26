@@ -1,5 +1,7 @@
 import numpy as np
 
+# TODO add a function to compute a causal order from an adjacency matrix
+
 
 def validate_adjacency_matrix(matrix):
     """
