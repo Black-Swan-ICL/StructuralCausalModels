@@ -29,8 +29,8 @@ class DirectedGraph(Graph):
         Returns
         -------
         bool
-            Whether the matrix to check is a valid adjacency matrix for a directed
-            graph.
+            Whether the matrix to check is a valid adjacency matrix for a
+            directed graph.
         """
         if not Graph.validate_binary_matrix(matrix):
             return False
