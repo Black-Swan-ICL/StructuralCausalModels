@@ -12,6 +12,7 @@ class Graph:
     Implements a graph structure using an adjacency matrix representation.
     """
 
+    # TODO test
     def __init__(self, adjacency_matrix, name=''):
 
         if not Graph.validate_binary_matrix(adjacency_matrix):
@@ -49,9 +50,16 @@ class Graph:
         return True
 
     # TODO test
-    # TODO document
     def to_adjacency_list_representation(self):
+        """
+        Returns an AlternativeGraph object which is equivalent to the Graph
+        object.
 
+        Returns
+        -------
+        AlternativeGraph
+            The equivalent adjacency list based representation of the graph.
+        """
         nb_vertices = self.adjacency_matrix.shape[0]
 
         # Build the adjacency lists
@@ -66,14 +74,23 @@ class Graph:
                                 adjacency_lists=adjacency_lists)
 
 
+class InvalidAdjacencyLists(Exception):
+    pass
+
+
 # TODO to string method
-# TODO validate inputs e.g. as many vertices as nb elts in adjacency_lists
 class AlternativeGraph:
     """
     Implements a graph structure representing an adjacency list representation.
     """
 
+    # TODO test
     def __init__(self, nb_vertices, adjacency_lists, name=''):
+
+        if not len(adjacency_lists) == nb_vertices:
+            msg = 'There should be as many adjacency lists as vertices !'
+            raise InvalidAdjacencyLists(msg)
+
         self.name = name
         self.nb_vertices = nb_vertices
         self.adjacency_lists = adjacency_lists
@@ -83,8 +100,16 @@ class AlternativeGraph:
             self.indegrees.append(count)
 
     # TODO test
-    # TODO document
     def to_adjacency_matrix_representation(self):
+        """
+        Returns a Graph object which is equivalent to the AlternativeGraph
+        object.
+
+        Returns
+        -------
+        Graph
+            The equivalent adjacency matrix based representation of the graph.
+        """
 
         # Build the adjacency matrix
         adjacency_matrix = np.zeros((self.nb_vertices, self.nb_vertices))
@@ -95,10 +120,16 @@ class AlternativeGraph:
                      adjacency_matrix=adjacency_matrix)
 
     # TODO test
-    # TODO document
     def kahn_algorithm_topological_sorting(self):
         """
-        Iterative method
+        An implementation of Kahn's algorithm for topological ordering of a
+        graph. Note that it does not make sense to use this method if the
+        graph is not in fact a DAG !
+
+        Returns
+        -------
+        list
+            A topological ordering of the graph.
         """
         queue = np.where(np.asarray(self.indegrees) == 0)[0].tolist()
         topological_ordering = []
@@ -117,10 +148,16 @@ class AlternativeGraph:
         return topological_ordering
 
     # TODO test
-    # TODO document
     def dfs_topological_sorting(self):
         """
-        Recursive method.
+        An implementation of the DFS-based (Depth First Search) algorithm for
+        topological ordering of a graph. Note that it does not make sense to
+        use this method if the graph is not in fact a DAG !
+
+        Returns
+        -------
+        list
+            A topological ordering of the graph.
         """
         def rec_func(current_vertex, visited_vertices, stack):
 
@@ -150,9 +187,16 @@ class AlternativeGraph:
     # TODO implement
     # TODO document
     # TODO test
-    def compute_all_topological_ordering(self):
+    def compute_all_topological_orderings(self):
+        """
+        A recursive implementation.
+        """
+        topological_orders = []
+        def rec_func():
 
-        return []
+            pass
+
+        return topological_orders
 
 
 if __name__ == '__main__':
