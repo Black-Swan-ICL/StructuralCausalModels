@@ -6,14 +6,15 @@ from StructuralCausalModels.graph import InvalidAdjacencyMatrix
 
 class DirectedGraph(Graph):
 
-    def __init__(self, name, adjacency_matrix):
+    def __init__(self, adjacency_matrix, name=''):
 
         if not DirectedGraph.validate_directed_graph_adjacency_matrix(
                 adjacency_matrix):
             msg = 'Adjacency matrix provided not valid for a directed graph.'
             raise InvalidAdjacencyMatrix(msg)
 
-        super().__init__(name, adjacency_matrix)
+        super().__init__(name=name,
+                         adjacency_matrix=adjacency_matrix)
 
     @staticmethod
     def validate_directed_graph_adjacency_matrix(matrix):
