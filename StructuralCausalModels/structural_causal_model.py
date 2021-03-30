@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from StructuralCausalModels.graph_utilities import validate_directed_acyclic_graph
+from StructuralCausalModels.dag import DirectedAcyclicGraph
 
 
 class CyclicityWarning(UserWarning):
@@ -61,7 +61,8 @@ class StructuralCausalModel:
 
         adjacency_matrix = self.adjacency_matrix()
 
-        if not validate_directed_acyclic_graph(adjacency_matrix, atol):
+        if not DirectedAcyclicGraph.validate_dag_adjacency_matrix(
+                adjacency_matrix, atol):
 
             msg = "The SCM defined is very likely to be cyclic. Beware !"
 

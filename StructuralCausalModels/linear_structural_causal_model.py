@@ -1,6 +1,6 @@
 import numpy as np
 
-from StructuralCausalModels.graph_utilities import validate_directed_graph
+from StructuralCausalModels.directed_graph import DirectedGraph
 from StructuralCausalModels.structural_equation import StructuralEquation
 from StructuralCausalModels.structural_causal_model import StructuralCausalModel
 
@@ -28,7 +28,8 @@ class LinearStructuralCausalModel(StructuralCausalModel):
         # directed graph
         binarised_matrix = matrix.copy()
         binarised_matrix[binarised_matrix != 0] = 1
-        if not validate_directed_graph(binarised_matrix):
+        if not DirectedGraph.validate_directed_graph_adjacency_matrix(
+                binarised_matrix):
             msg = "The graph induced by the matrix is not a directed graph !"
             raise InvalidWeightedAdjacencyMatrix(msg)
 
