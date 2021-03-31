@@ -6,7 +6,6 @@ class InvalidAdjacencyMatrix(Exception):
     pass
 
 
-# TODO to string method
 class Graph:
     """
     Implements a graph structure using an adjacency matrix representation.
@@ -73,12 +72,38 @@ class Graph:
                                 nb_vertices=nb_vertices,
                                 adjacency_lists=adjacency_lists)
 
+    # TODO document
+    def __str__(self):
+
+        s = f"Graph '{self.name}', adjacency matrix:\n{self.adjacency_matrix}"
+
+        return s
+
+    # TODO document
+    # TODO test that with eval can reconstitute the object
+    def __repr__(self):
+
+        s = f"Graph(name={repr(self.name)}, adjacency_matrix=np.asarray("
+        s += f"{np.array2string(self.adjacency_matrix, separator=',')}))"
+
+        return s
+
+    # TODO document
+    def __eq__(self, other):
+
+        if not np.all(self.adjacency_matrix == other.adjacency_matrix):
+            return False
+
+        if self.name != other.name:
+            return False
+
+        return True
+
 
 class InvalidAdjacencyLists(Exception):
     pass
 
 
-# TODO to string method
 class AlternativeGraph:
     """
     Implements a graph structure representing an adjacency list representation.
@@ -198,6 +223,38 @@ class AlternativeGraph:
 
         return topological_orders
 
+    # TODO document
+    def __str__(self):
+
+        s = f"AlternativeGraph '{self.name}', {self.nb_vertices} vertices, "
+        s += f"adjacency lists:\n{self.adjacency_lists}"
+
+        return s
+
+    # TODO document
+    # TODO test that with eval can reconstitute the object
+    def __repr__(self):
+
+        s = f"AlternativeGraph(nb_vertices={repr(self.nb_vertices)}, "
+        s += f"adjacency_lists={repr(self.adjacency_lists)}, "
+        s += f"name={repr(self.name)})"
+
+        return s
+
+    # TODO document
+    def __eq__(self, other):
+
+        if self.nb_vertices != other.nb_vertices:
+            return False
+
+        if self.adjacency_lists != other.adjacency_lists:
+            return False
+
+        if self.name != other.name:
+            return False
+
+        return True
+
 
 if __name__ == '__main__':
 
@@ -217,6 +274,9 @@ if __name__ == '__main__':
     ])
 
     test_graph = Graph(name='test', adjacency_matrix=mymat)
+    reconstructed = eval(repr(test_graph))
+
+    print(f"Graph reconstruction worked : {test_graph == reconstructed}")
 
     transformed = test_graph.to_adjacency_list_representation()
     print(transformed.nb_vertices)
@@ -224,6 +284,14 @@ if __name__ == '__main__':
     print(transformed.indegrees)
     print(f"Causal order : {transformed.dfs_topological_sorting()}")
     print(f"Kahn : {transformed.kahn_algorithm_topological_sorting()}")
+
+    print('\n\n\n')
+    print(transformed)
+    reconstructed = eval(repr(transformed))
+    print(f"AlternativeGraph reconstruction worked : " +
+          f"{transformed == reconstructed}")
+
+    print('\n\n\n')
 
     retransformed = transformed.to_adjacency_matrix_representation()
     print(retransformed.adjacency_matrix)
