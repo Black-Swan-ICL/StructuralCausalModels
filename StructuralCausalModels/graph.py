@@ -229,6 +229,11 @@ class GraphViaAdjacencyLists:
         return True
 
 
+class GraphsCannotBeCompared(Exception):
+
+    pass
+
+
 class Graph:
 
     def __init__(self, adjacency_matrix, name=''):
@@ -261,3 +266,53 @@ class Graph:
         list_based = matrix_based.to_adjacency_list_representation()
         self.adjacency_matrix_representation = matrix_based
         self.adjacency_list_representation = list_based
+
+    # TODO document
+    # TODO test
+    @staticmethod
+    def compute_edge_types(adjacency_matrix):
+
+        edge_types = dict()
+
+        # TODO move outside
+        def func(a, b):
+
+            if a == 0 and b == 0:
+                return 'no edge'
+            elif a == 1 and b == 0:
+                return '->'
+            elif a == 0 and b == 1:
+                return '<-'
+            elif a == 1 and b == 1:
+                return '--'
+            else:
+                raise ValueError
+
+        m = adjacency_matrix.shape[0]
+        for i in range(m):
+            for j in range(i, m):
+                edge_types[(i, j)] = func(adjacency_matrix[i, j],
+                                          adjacency_matrix[j, i])
+
+        return edge_types
+
+    # TODO document
+    # TODO test
+    def structural_hamming_distance(self, other):
+
+        edge_types_1 = Graph.compute_edge_types(self.adjacency_matrix)
+        edge_types_2 = Graph.compute_edge_types(other.adjacency_matrix)
+
+        if set(edge_types_1.keys()) == set(edge_types_2.keys()):
+            msg = 'The Structural Hamming Distances cannot be computed : the '
+            msg += 'graphs cannot be compared.'
+            raise GraphsCannotBeCompared(msg)
+
+        shd = 0
+
+        # TODO have a general penalty function
+        for key in edge_types_1.keys():
+
+            shd += int(edge_types_1[key] != edge_types_2[key])
+
+        return shd

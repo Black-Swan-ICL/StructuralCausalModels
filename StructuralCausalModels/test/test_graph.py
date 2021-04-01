@@ -82,3 +82,56 @@ def test_can_rebuild_graph_via_list(via_list_example):
     reconstructed = eval(repr(via_list_example))
 
     assert reconstructed == via_list_example
+
+
+@pytest.mark.parametrize(
+    "adjacency_matrix, expected_edge_types",
+    [
+        (
+            np.asarray([
+                [0, 1, 1, 1],
+                [0, 0, 1, 0],
+                [0, 0, 0, 0],
+                [0, 1, 1, 0]
+            ]),
+            {
+                (0, 0): 'no edge',
+                (0, 1): '->',
+                (0, 2): '->',
+                (0, 3): '->',
+                (1, 1): 'no edge',
+                (1, 2): '->',
+                (1, 3): '<-',
+                (2, 2): 'no edge',
+                (2, 3): '<-',
+                (3, 3): 'no edge'
+            }
+        ),
+        (
+                np.asarray([
+                    [0, 1, 1, 1],
+                    [1, 0, 1, 1],
+                    [0, 0, 0, 1],
+                    [0, 0, 1, 0]
+                ]),
+                {
+                    (0, 0): 'no edge',
+                    (0, 1): '--',
+                    (0, 2): '->',
+                    (0, 3): '->',
+                    (1, 1): 'no edge',
+                    (1, 2): '->',
+                    (1, 3): '->',
+                    (2, 2): 'no edge',
+                    (2, 3): '--',
+                    (3, 3): 'no edge'
+                }
+        ),
+
+    ]
+)
+def test_compute_edge_types(adjacency_matrix, expected_edge_types):
+
+    actual_edge_types = Graph.compute_edge_types(adjacency_matrix)
+
+    assert actual_edge_types == expected_edge_types
