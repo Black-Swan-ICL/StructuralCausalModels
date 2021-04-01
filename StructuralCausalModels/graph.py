@@ -6,7 +6,7 @@ class InvalidAdjacencyMatrix(Exception):
     pass
 
 
-class Graph:
+class GraphViaAdjacencyMatrix:
     """
     Implements a graph structure using an adjacency matrix representation.
     """
@@ -14,7 +14,7 @@ class Graph:
     # TODO test
     def __init__(self, adjacency_matrix, name=''):
 
-        if not Graph.validate_binary_matrix(adjacency_matrix):
+        if not GraphViaAdjacencyMatrix.validate_binary_matrix(adjacency_matrix):
             msg = 'Adjacency matrix provided not valid.'
             raise InvalidAdjacencyMatrix(msg)
 
@@ -68,9 +68,9 @@ class Graph:
                 np.where(self.adjacency_matrix[i, :] != 0)[0].tolist()
             )
 
-        return AlternativeGraph(name=self.name,
-                                nb_vertices=nb_vertices,
-                                adjacency_lists=adjacency_lists)
+        return GraphViaAdjacencyLists(name=self.name,
+                                      nb_vertices=nb_vertices,
+                                      adjacency_lists=adjacency_lists)
 
     def __str__(self):
         """
@@ -81,7 +81,8 @@ class Graph:
         str
             A user-friendly string representation of the object.
         """
-        s = f"Graph '{self.name}', adjacency matrix:\n{self.adjacency_matrix}"
+        s = f"GraphViaAdjacencyMatrix '{self.name}', "
+        s += f"adjacency matrix:\n{self.adjacency_matrix}"
 
         return s
 
@@ -96,7 +97,8 @@ class Graph:
         str
             A string representation of the object from which it can be rebuilt.
         """
-        s = f"Graph(name={repr(self.name)}, adjacency_matrix=np.asarray("
+        s = f"GraphViaAdjacencyMatrix(name={repr(self.name)}, "
+        s += f"adjacency_matrix=np.asarray("
         s += f"{np.array2string(self.adjacency_matrix, separator=',')}))"
 
         return s
@@ -109,7 +111,7 @@ class Graph:
 
         Parameters
         ----------
-        other : Graph
+        other : GraphViaAdjacencyMatrix
             The other Graph object.
 
         Returns
@@ -131,7 +133,7 @@ class InvalidAdjacencyLists(Exception):
 
 
 # TODO implement a method to find all the topological orderings ?
-class AlternativeGraph:
+class GraphViaAdjacencyLists:
     """
     Implements a graph structure representing an adjacency list representation.
     """
@@ -168,73 +170,73 @@ class AlternativeGraph:
         for i in range(self.nb_vertices):
             adjacency_matrix[i, self.adjacency_lists[i]] = 1
 
-        return Graph(name=self.name,
-                     adjacency_matrix=adjacency_matrix)
+        return GraphViaAdjacencyMatrix(name=self.name,
+                                       adjacency_matrix=adjacency_matrix)
 
-    # TODO test
-    def kahn_algorithm_topological_ordering(self):
-        """
-        An implementation of Kahn's algorithm for topological ordering of a
-        graph. Note that it does not make sense to use this method if the
-        graph is not in fact a DAG !
+    # TODO remove
+    # def kahn_algorithm_topological_ordering(self):
+    #     """
+    #     An implementation of Kahn's algorithm for topological ordering of a
+    #     graph. Note that it does not make sense to use this method if the
+    #     graph is not in fact a DAG !
+    #
+    #     Returns
+    #     -------
+    #     list
+    #         A topological ordering of the graph.
+    #     """
+    #     queue = np.where(np.asarray(self.indegrees) == 0)[0].tolist()
+    #     topological_ordering = []
+    #     indegrees = copy.deepcopy(self.indegrees)
+    #
+    #     while queue:
+    #
+    #         current_node = queue.pop(0)
+    #         topological_ordering.append(current_node)
+    #
+    #         for neighbour in self.adjacency_lists[current_node]:
+    #             indegrees[neighbour] -= 1
+    #             if indegrees[neighbour] == 0:
+    #                 queue.append(neighbour)
+    #
+    #     return topological_ordering
 
-        Returns
-        -------
-        list
-            A topological ordering of the graph.
-        """
-        queue = np.where(np.asarray(self.indegrees) == 0)[0].tolist()
-        topological_ordering = []
-        indegrees = copy.deepcopy(self.indegrees)
-
-        while queue:
-
-            current_node = queue.pop(0)
-            topological_ordering.append(current_node)
-
-            for neighbour in self.adjacency_lists[current_node]:
-                indegrees[neighbour] -= 1
-                if indegrees[neighbour] == 0:
-                    queue.append(neighbour)
-
-        return topological_ordering
-
-    # TODO test
-    def dfs_topological_ordering(self):
-        """
-        An implementation of the DFS-based (Depth First Search) algorithm for
-        topological ordering of a graph. Note that it does not make sense to
-        use this method if the graph is not in fact a DAG !
-
-        Returns
-        -------
-        list
-            A topological ordering of the graph.
-        """
-        def rec_func(current_vertex, visited_vertices, stack):
-
-            visited_vertices[current_vertex] = True
-
-            for neighbour in self.adjacency_lists[current_vertex]:
-                if not visited_vertices[neighbour]:
-                    rec_func(current_vertex=neighbour,
-                             visited_vertices=visited_vertices,
-                             stack=stack)
-
-            stack.append(current_vertex)
-
-        visited_vertices = [False] * self.nb_vertices
-        stack = []
-
-        for i in range(self.nb_vertices):
-            if not visited_vertices[i]:
-                rec_func(current_vertex=i,
-                         visited_vertices=visited_vertices,
-                         stack=stack)
-
-        topological_ordering = stack[::-1]
-
-        return topological_ordering
+    # TODO remove
+    # def dfs_topological_ordering(self):
+    #     """
+    #     An implementation of the DFS-based (Depth First Search) algorithm for
+    #     topological ordering of a graph. Note that it does not make sense to
+    #     use this method if the graph is not in fact a DAG !
+    #
+    #     Returns
+    #     -------
+    #     list
+    #         A topological ordering of the graph.
+    #     """
+    #     def rec_func(current_vertex, visited_vertices, stack):
+    #
+    #         visited_vertices[current_vertex] = True
+    #
+    #         for neighbour in self.adjacency_lists[current_vertex]:
+    #             if not visited_vertices[neighbour]:
+    #                 rec_func(current_vertex=neighbour,
+    #                          visited_vertices=visited_vertices,
+    #                          stack=stack)
+    #
+    #         stack.append(current_vertex)
+    #
+    #     visited_vertices = [False] * self.nb_vertices
+    #     stack = []
+    #
+    #     for i in range(self.nb_vertices):
+    #         if not visited_vertices[i]:
+    #             rec_func(current_vertex=i,
+    #                      visited_vertices=visited_vertices,
+    #                      stack=stack)
+    #
+    #     topological_ordering = stack[::-1]
+    #
+    #     return topological_ordering
 
     def check_topological_ordering(self, ordering):
         """
@@ -303,7 +305,7 @@ class AlternativeGraph:
         str
             A string representation of the object from which it can be rebuilt.
         """
-        s = f"AlternativeGraph(nb_vertices={repr(self.nb_vertices)}, "
+        s = f"GraphViaAdjacencyLists(nb_vertices={repr(self.nb_vertices)}, "
         s += f"adjacency_lists={repr(self.adjacency_lists)}, "
         s += f"name={repr(self.name)})"
 
@@ -317,7 +319,7 @@ class AlternativeGraph:
 
         Parameters
         ----------
-        other : AlternativeGraph
+        other : GraphViaAdjacencyLists
             The other AlternativeGraph object.
 
         Returns
@@ -338,43 +340,77 @@ class AlternativeGraph:
         return True
 
 
-if __name__ == '__main__':
+class Graph:
 
-    # mymat = np.asarray([
+    def __init__(self, adjacency_matrix, name=''):
+        matrix_based = GraphViaAdjacencyMatrix(
+            adjacency_matrix=adjacency_matrix,
+            name=name
+        )
+        list_based = matrix_based.to_adjacency_list_representation()
+        self.adjacency_matrix_representation = matrix_based
+        self.adjacency_list_representation = list_based
+
+    @staticmethod
+    def validate_binary_matrix(matrix):
+        return GraphViaAdjacencyMatrix.validate_binary_matrix(matrix)
+
+    @property
+    def adjacency_matrix(self):
+        return self.adjacency_matrix_representation.adjacency_matrix
+
+    @property
+    def name(self):
+        return self.adjacency_matrix_representation.name
+
+    @adjacency_matrix.setter
+    def adjacency_matrix(self, new_adjacency_matrix):
+        matrix_based = GraphViaAdjacencyMatrix(
+            adjacency_matrix=new_adjacency_matrix,
+            name=self.name
+        )
+        list_based = matrix_based.to_adjacency_list_representation()
+        self.adjacency_matrix_representation = matrix_based
+        self.adjacency_list_representation = list_based
+
+
+# if __name__ == '__main__':
+#
+#     mymat = np.asarray([
     #     [0, 1, 1, 1],
     #     [0, 0, 1, 0],
     #     [0, 0, 0, 0],
     #     [0, 1, 1, 0]
     # ])
-    mymat = np.asarray([
-        [0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 1, 0, 0],
-        [0, 1, 0, 0, 0, 0],
-        [1, 1, 0, 0, 0, 0],
-        [1, 0, 1, 0, 0, 0]
-    ])
-
-    test_graph = Graph(name='test', adjacency_matrix=mymat)
-    reconstructed = eval(repr(test_graph))
-
-    print(f"Graph reconstruction worked : {test_graph == reconstructed}")
-
-    transformed = test_graph.to_adjacency_list_representation()
-    print(transformed.nb_vertices)
-    print(transformed.adjacency_lists)
-    print(transformed.indegrees)
-    print(f"Causal order : {transformed.dfs_topological_ordering()}")
-    print(f"Kahn : {transformed.kahn_algorithm_topological_ordering()}")
-    print(transformed.check_topological_ordering(transformed.kahn_algorithm_topological_ordering()))
-
-    print('\n\n\n')
-    print(transformed)
-    reconstructed = eval(repr(transformed))
-    print(f"AlternativeGraph reconstruction worked : " +
-          f"{transformed == reconstructed}")
-
-    print('\n\n\n')
-
-    retransformed = transformed.to_adjacency_matrix_representation()
-    print(retransformed.adjacency_matrix)
+    # mymat = np.asarray([
+    #     [0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 1, 0, 0],
+    #     [0, 1, 0, 0, 0, 0],
+    #     [1, 1, 0, 0, 0, 0],
+    #     [1, 0, 1, 0, 0, 0]
+    # ])
+    #
+    # test_graph = GraphViaAdjacencyMatrix(name='test', adjacency_matrix=mymat)
+    # reconstructed = eval(repr(test_graph))
+    #
+    # print(f"Graph reconstruction worked : {test_graph == reconstructed}")
+    #
+    # transformed = test_graph.to_adjacency_list_representation()
+    # print(transformed.nb_vertices)
+    # print(transformed.adjacency_lists)
+    # print(transformed.indegrees)
+    # print(f"Causal order : {transformed.dfs_topological_ordering()}")
+    # print(f"Kahn : {transformed.kahn_algorithm_topological_ordering()}")
+    # print(transformed.check_topological_ordering(transformed.kahn_algorithm_topological_ordering()))
+    #
+    # print('\n\n\n')
+    # print(transformed)
+    # reconstructed = eval(repr(transformed))
+    # print(f"AlternativeGraph reconstruction worked : " +
+    #       f"{transformed == reconstructed}")
+    #
+    # print('\n\n\n')
+    #
+    # retransformed = transformed.to_adjacency_matrix_representation()
+    # print(retransformed.adjacency_matrix)
