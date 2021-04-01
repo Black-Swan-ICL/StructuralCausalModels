@@ -48,17 +48,17 @@ class LinearStructuralCausalModel(StructuralCausalModel):
             indices_rhs = sorted(np.where(matrix[:, i] != 0)[0].tolist())
             exogenous_variable = exogenous_variables[i]
 
-            def generate_partial_function(index_lhs, indices_rhs):
+            def generate_partial_function(lhs_index, rhs_indices):
 
                 def func(u, *inputs):
                     if not inputs:
                         return u
                     else:
                         res = u.astype(float)
-                        for j in range(len(indices_rhs)):
+                        for j in range(len(rhs_indices)):
                             # TODO are we sure the right coeff will always go
                             #  with the right input ?
-                            res += matrix[indices_rhs[j], index_lhs] * inputs[j]
+                            res += matrix[rhs_indices[j], lhs_index] * inputs[j]
                         return res
 
                 return func

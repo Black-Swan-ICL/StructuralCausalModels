@@ -100,7 +100,7 @@ class DirectedAcyclicGraph(DirectedGraph):
         """
         list_repr_graph = self.adjacency_list_representation
 
-        def rec_func(current_vertex, visited_vertices, stack):
+        def rec_func(current_vertex, visited_vertices, acc):
 
             visited_vertices[current_vertex] = True
 
@@ -108,18 +108,18 @@ class DirectedAcyclicGraph(DirectedGraph):
                 if not visited_vertices[neighbour]:
                     rec_func(current_vertex=neighbour,
                              visited_vertices=visited_vertices,
-                             stack=stack)
+                             acc=acc)
 
-            stack.append(current_vertex)
+            acc.append(current_vertex)
 
-        visited_vertices = [False] * list_repr_graph.nb_vertices
+        already_visited_vertices = [False] * list_repr_graph.nb_vertices
         stack = []
 
         for i in range(list_repr_graph.nb_vertices):
-            if not visited_vertices[i]:
+            if not already_visited_vertices[i]:
                 rec_func(current_vertex=i,
-                         visited_vertices=visited_vertices,
-                         stack=stack)
+                         visited_vertices=already_visited_vertices,
+                         acc=stack)
 
         topological_ordering = stack[::-1]
 
@@ -129,7 +129,7 @@ class DirectedAcyclicGraph(DirectedGraph):
         """
         Computes a causal order of the DAG using the method chosen by the user.
 
-        Paraneters
+        Parameters
         ----------
         method : str
             The method to use to compute the causal order.
