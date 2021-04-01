@@ -34,6 +34,17 @@ _large_adj_matrix_causal_orders = [[0, 1, 2, 3, 4, 6, 5],
                                    [2, 1, 0, 3, 4, 6, 5],
                                    [2, 1, 0, 4, 3, 6, 5]]
 
+_maximally_connected_large_matrix_causal_order = [0, 1, 2, 3, 4, 6, 5]
+_maximally_connected_large_adj_matrix = np.asarray([
+    [0, 1, 1, 1, 1, 1, 1],
+    [0, 0, 1, 1, 1, 1, 1],
+    [0, 0, 0, 1, 1, 1, 1],
+    [0, 0, 0, 0, 1, 1, 1],
+    [0, 0, 0, 0, 0, 1, 1],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0]
+])
+
 
 @pytest.mark.parametrize(
     "matrix, expected",
@@ -111,3 +122,18 @@ def test_check_topological_ordering(matrix, ordering, expected):
     dag = DirectedAcyclicGraph(adjacency_matrix=matrix)
 
     assert expected == dag.check_topological_ordering(ordering)
+
+
+@pytest.mark.parametrize(
+    "causal_order, expected_adjacency_matrix",
+    [
+        (_maximally_connected_large_matrix_causal_order,
+         _maximally_connected_large_adj_matrix)
+    ]
+)
+def test_causal_order_to_dag(causal_order, expected_adjacency_matrix):
+
+    dag = DirectedAcyclicGraph.causal_order_to_dag(causal_order)
+    actual_adjacency_matrix = dag.adjacency_matrix
+
+    assert np.all(actual_adjacency_matrix == expected_adjacency_matrix)

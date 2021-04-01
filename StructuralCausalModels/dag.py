@@ -202,3 +202,32 @@ class DirectedAcyclicGraph(DirectedGraph):
                     pass
 
         return True
+
+    @staticmethod
+    def causal_order_to_dag(causal_order):
+        """
+        Generates the maximally connected DAG that is compatible with the causal
+        order provided i.e. for all j such that j > i in the causal order, there
+        will be an edge from X_i to X_j in the DAG (i.e. there will be a 1 in
+        position [i, j] in the DAG's adjacency matrix).
+
+        Parameters
+        ----------
+        causal_order : array_like
+            The causal order.
+
+        Returns
+        -------
+        DirectedAcyclicGraph
+            The maximally connected DAG compatible with the causal order.
+        """
+        m = len(causal_order)
+        adjacency_matrix = np.zeros((m, m))
+
+        for i in range(m):
+            for j in range(i+1, m):
+                adjacency_matrix[causal_order[i], causal_order[j]] = 1
+
+        dag = DirectedAcyclicGraph(adjacency_matrix=adjacency_matrix)
+
+        return dag
