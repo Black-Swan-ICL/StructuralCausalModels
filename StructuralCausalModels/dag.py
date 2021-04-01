@@ -10,6 +10,12 @@ class TopologicalOrderingMethodNotImplemented(Exception):
     pass
 
 
+class InvalidOrdering(Exception):
+
+    pass
+
+
+# TODO add a method to compute all topological orderings ?
 class DirectedAcyclicGraph(DirectedGraph):
 
     def __init__(self, adjacency_matrix, name=''):
@@ -53,7 +59,6 @@ class DirectedAcyclicGraph(DirectedGraph):
 
         return np.allclose(eigenvalues, comparand, atol=atol)
 
-    # TODO test
     def kahn_algorithm(self):
         """
         An implementation of Kahn's algorithm for topological ordering of a
@@ -81,14 +86,7 @@ class DirectedAcyclicGraph(DirectedGraph):
 
         return topological_ordering
 
-    # TODO remove
-    # def kahn_algorithm(self):
-    #
-    #     graph_for_sorting = self.to_adjacency_list_representation()
-    #
-    #     return graph_for_sorting.kahn_algorithm_topological_ordering()
-
-    # TODO test
+    # TODO to correct, does not work !
     def depth_first_search(self):
         """
         An implementation of the DFS-based (Depth First Search) algorithm for
@@ -127,26 +125,80 @@ class DirectedAcyclicGraph(DirectedGraph):
 
         return topological_ordering
 
-    # TODO remove
-    # def depth_first_search(self):
-    #
-    #     graph_for_sorting = self.to_adjacency_list_representation()
-    #
-    #     return graph_for_sorting.dfs_topological_ordering()
-
-    # TODO document
     def compute_causal_order(self, method):
+        """
+        Computes a causal order of the DAG using the method chosen by the user.
 
+        Paraneters
+        ----------
+        method : str
+            The method to use to compute the causal order.
+
+        Returns
+        -------
+        list
+            A causal order of the DAG.
+
+        Raises
+        ------
+        TopologicalOrderingMethodNotImplemented
+            If the method chosen by the usr is not implemented.
+        """
         if method == 'kahn':
 
             return self.kahn_algorithm()
 
-        elif method == 'dfs':
-
-            return self.depth_first_search()
+        # TODO uncomment when dfs works
+        # elif method == 'dfs':
+        #
+        #     return self.depth_first_search()
 
         else:
 
             msg = "Method must be one of 'kahn' for Kahn's algorithm, or 'dfs' "
             msg += "for a depth-first search algorithm !"
             raise TopologicalOrderingMethodNotImplemented(msg)
+
+    def check_topological_ordering(self, ordering):
+        """
+        Checks whether an ordering is a correct topological ordering for the
+        graph.
+
+        Parameters
+        ----------
+        ordering : list
+            The candidate ordering.
+
+        Returns
+        -------
+        bool
+            Whether the ordering is a correct topological ordering for the
+            graph.
+
+        Raises
+        ------
+        InvalidOrdering
+            If the ordering passed is not a valid ordering for the graph.
+        """
+        list_repr_graph = self.adjacency_list_representation
+
+        if set(ordering) != set(range(list_repr_graph.nb_vertices)):
+            msg = "Ordering provided is not a valid ordering for the graph !"
+            raise InvalidOrdering(msg)
+
+        # Build a "look-up table" of the nodes and their indices
+        index_lookup = dict()
+        for i in range(list_repr_graph.nb_vertices):
+            index_lookup[i] = ordering.index(i)
+
+        # Use the definition of a topological ordering
+        for i in range(len(list_repr_graph.adjacency_lists)):
+            parent = i
+            children = list_repr_graph.adjacency_lists[parent]
+            for child in children:
+                if index_lookup[child] <= index_lookup[parent]:
+                    return False
+                else:
+                    pass
+
+        return True

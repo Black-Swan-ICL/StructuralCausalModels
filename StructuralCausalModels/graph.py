@@ -1,4 +1,3 @@
-import copy
 import numpy as np
 
 
@@ -11,7 +10,6 @@ class GraphViaAdjacencyMatrix:
     Implements a graph structure using an adjacency matrix representation.
     """
 
-    # TODO test
     def __init__(self, adjacency_matrix, name=''):
 
         if not GraphViaAdjacencyMatrix.validate_binary_matrix(adjacency_matrix):
@@ -48,7 +46,6 @@ class GraphViaAdjacencyMatrix:
 
         return True
 
-    # TODO test
     def to_adjacency_list_representation(self):
         """
         Returns an AlternativeGraph object which is equivalent to the Graph
@@ -86,7 +83,6 @@ class GraphViaAdjacencyMatrix:
 
         return s
 
-    # TODO test that with eval can reconstitute the object
     def __repr__(self):
         """
         Returns a string representation of the object from which it can be
@@ -132,13 +128,11 @@ class InvalidAdjacencyLists(Exception):
     pass
 
 
-# TODO implement a method to find all the topological orderings ?
 class GraphViaAdjacencyLists:
     """
     Implements a graph structure representing an adjacency list representation.
     """
 
-    # TODO test
     def __init__(self, nb_vertices, adjacency_lists, name=''):
 
         if not len(adjacency_lists) == nb_vertices:
@@ -153,7 +147,6 @@ class GraphViaAdjacencyLists:
             count = sum([int(i in adj_l) for adj_l in self.adjacency_lists])
             self.indegrees.append(count)
 
-    # TODO test
     def to_adjacency_matrix_representation(self):
         """
         Returns a Graph object which is equivalent to the AlternativeGraph
@@ -173,113 +166,6 @@ class GraphViaAdjacencyLists:
         return GraphViaAdjacencyMatrix(name=self.name,
                                        adjacency_matrix=adjacency_matrix)
 
-    # TODO remove
-    # def kahn_algorithm_topological_ordering(self):
-    #     """
-    #     An implementation of Kahn's algorithm for topological ordering of a
-    #     graph. Note that it does not make sense to use this method if the
-    #     graph is not in fact a DAG !
-    #
-    #     Returns
-    #     -------
-    #     list
-    #         A topological ordering of the graph.
-    #     """
-    #     queue = np.where(np.asarray(self.indegrees) == 0)[0].tolist()
-    #     topological_ordering = []
-    #     indegrees = copy.deepcopy(self.indegrees)
-    #
-    #     while queue:
-    #
-    #         current_node = queue.pop(0)
-    #         topological_ordering.append(current_node)
-    #
-    #         for neighbour in self.adjacency_lists[current_node]:
-    #             indegrees[neighbour] -= 1
-    #             if indegrees[neighbour] == 0:
-    #                 queue.append(neighbour)
-    #
-    #     return topological_ordering
-
-    # TODO remove
-    # def dfs_topological_ordering(self):
-    #     """
-    #     An implementation of the DFS-based (Depth First Search) algorithm for
-    #     topological ordering of a graph. Note that it does not make sense to
-    #     use this method if the graph is not in fact a DAG !
-    #
-    #     Returns
-    #     -------
-    #     list
-    #         A topological ordering of the graph.
-    #     """
-    #     def rec_func(current_vertex, visited_vertices, stack):
-    #
-    #         visited_vertices[current_vertex] = True
-    #
-    #         for neighbour in self.adjacency_lists[current_vertex]:
-    #             if not visited_vertices[neighbour]:
-    #                 rec_func(current_vertex=neighbour,
-    #                          visited_vertices=visited_vertices,
-    #                          stack=stack)
-    #
-    #         stack.append(current_vertex)
-    #
-    #     visited_vertices = [False] * self.nb_vertices
-    #     stack = []
-    #
-    #     for i in range(self.nb_vertices):
-    #         if not visited_vertices[i]:
-    #             rec_func(current_vertex=i,
-    #                      visited_vertices=visited_vertices,
-    #                      stack=stack)
-    #
-    #     topological_ordering = stack[::-1]
-    #
-    #     return topological_ordering
-
-    def check_topological_ordering(self, ordering):
-        """
-        Checks whether an ordering is a correct topological ordering for the
-        graph.
-
-        Parameters
-        ----------
-        ordering : list
-            The candidate ordering.
-
-        Returns
-        -------
-        bool
-            Whether the ordering is a correct topological ordering for the
-            graph.
-
-        Raises
-        ------
-        ValueError
-            If the ordering passed is not a valid ordering for the graph.
-        """
-        if set(ordering) != set(range(self.nb_vertices)):
-            msg = "Ordering provided is not a valid ordering for the graph !"
-            raise ValueError(msg)
-
-        # Build a "look-up table" of the nodes and their indices
-        index_lookup = dict()
-        for i in range(self.nb_vertices):
-            index_lookup[i] = ordering.index(i)
-
-        # Use the definition of a topological ordering
-        for i in range(len(self.adjacency_lists)):
-            parent = i
-            children = self.adjacency_lists[parent]
-            for child in children:
-                if index_lookup[child] <= index_lookup[parent]:
-                    return False
-                else:
-                    pass
-
-        return True
-
     def __str__(self):
         """
         Returns a user-friendly string representation of the object.
@@ -294,7 +180,6 @@ class GraphViaAdjacencyLists:
 
         return s
 
-    # TODO test that with eval can reconstitute the object
     def __repr__(self):
         """
         Returns a string representation of the object from which it can be
@@ -331,8 +216,12 @@ class GraphViaAdjacencyLists:
         if self.nb_vertices != other.nb_vertices:
             return False
 
-        if self.adjacency_lists != other.adjacency_lists:
+        if len(self.adjacency_lists) != len(other.adjacency_lists):
             return False
+        else:
+            for l1, l2 in zip(self.adjacency_lists, other.adjacency_lists):
+                if set(l1) != set(l2):
+                    return False
 
         if self.name != other.name:
             return False
@@ -372,45 +261,3 @@ class Graph:
         list_based = matrix_based.to_adjacency_list_representation()
         self.adjacency_matrix_representation = matrix_based
         self.adjacency_list_representation = list_based
-
-
-# if __name__ == '__main__':
-#
-#     mymat = np.asarray([
-    #     [0, 1, 1, 1],
-    #     [0, 0, 1, 0],
-    #     [0, 0, 0, 0],
-    #     [0, 1, 1, 0]
-    # ])
-    # mymat = np.asarray([
-    #     [0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 1, 0, 0],
-    #     [0, 1, 0, 0, 0, 0],
-    #     [1, 1, 0, 0, 0, 0],
-    #     [1, 0, 1, 0, 0, 0]
-    # ])
-    #
-    # test_graph = GraphViaAdjacencyMatrix(name='test', adjacency_matrix=mymat)
-    # reconstructed = eval(repr(test_graph))
-    #
-    # print(f"Graph reconstruction worked : {test_graph == reconstructed}")
-    #
-    # transformed = test_graph.to_adjacency_list_representation()
-    # print(transformed.nb_vertices)
-    # print(transformed.adjacency_lists)
-    # print(transformed.indegrees)
-    # print(f"Causal order : {transformed.dfs_topological_ordering()}")
-    # print(f"Kahn : {transformed.kahn_algorithm_topological_ordering()}")
-    # print(transformed.check_topological_ordering(transformed.kahn_algorithm_topological_ordering()))
-    #
-    # print('\n\n\n')
-    # print(transformed)
-    # reconstructed = eval(repr(transformed))
-    # print(f"AlternativeGraph reconstruction worked : " +
-    #       f"{transformed == reconstructed}")
-    #
-    # print('\n\n\n')
-    #
-    # retransformed = transformed.to_adjacency_matrix_representation()
-    # print(retransformed.adjacency_matrix)
