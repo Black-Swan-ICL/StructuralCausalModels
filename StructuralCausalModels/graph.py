@@ -88,9 +88,22 @@ class Graph:
 
         return s
 
-    # TODO document
     def __eq__(self, other):
+        """
+        Checks whether the object is equal to another Graph object. Two Graph
+        objects are equal if they have the same adjacency matrix and the same
+        names.
 
+        Parameters
+        ----------
+        other : Graph
+            The other Graph object.
+
+        Returns
+        -------
+        bool
+            Whether the two Graph objects are equal.
+        """
         if not np.all(self.adjacency_matrix == other.adjacency_matrix):
             return False
 
@@ -241,8 +254,22 @@ class AlternativeGraph:
 
         return s
 
-    # TODO document
     def __eq__(self, other):
+        """
+        Checks whether the object is equal to another AlternativeGraph object.
+        The two objects are equal if they have the same number of vertices, the
+        same adjacency lists and the same names.
+
+        Parameters
+        ----------
+        other : AlternativeGraph
+            The other AlternativeGraph object.
+
+        Returns
+        -------
+        bool
+            Whether the objects are equal.
+        """
 
         if self.nb_vertices != other.nb_vertices:
             return False
