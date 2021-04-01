@@ -1,3 +1,5 @@
+from enum import Enum
+
 import numpy as np
 
 
@@ -234,6 +236,18 @@ class GraphsCannotBeCompared(Exception):
     pass
 
 
+class EdgeType(Enum):
+    NONE = 'no edge'
+    FORWARD = '->'
+    BACKWARD = '<-'
+    UNDIRECTED = '--'
+
+
+class ImpossibleEdgeConfiguration(Exception):
+
+    pass
+
+
 class Graph:
 
     def __init__(self, adjacency_matrix, name=''):
@@ -267,52 +281,106 @@ class Graph:
         self.adjacency_matrix_representation = matrix_based
         self.adjacency_list_representation = list_based
 
+    # TODO test
+    # TODO document
+    @staticmethod
+    def compute_edge_type(m_ij, m_ji):
+
+        if m_ij == 0 and m_ji == 0:
+
+            return EdgeType.NONE
+
+        elif m_ij == 1 and m_ji == 0:
+
+            return EdgeType.FORWARD
+
+        elif m_ij == 0 and m_ji == 1:
+
+            return EdgeType.BACKWARD
+
+        elif m_ij == 1 and m_ji == 1:
+
+            return EdgeType.UNDIRECTED
+
+        else:
+
+            raise ImpossibleEdgeConfiguration
+
     # TODO document
     # TODO test
     @staticmethod
-    def compute_edge_types(adjacency_matrix):
+    def adjacency_matrix_to_edges(adjacency_matrix):
 
-        edge_types = dict()
-
-        # TODO move outside
-        def func(a, b):
-
-            if a == 0 and b == 0:
-                return 'no edge'
-            elif a == 1 and b == 0:
-                return '->'
-            elif a == 0 and b == 1:
-                return '<-'
-            elif a == 1 and b == 1:
-                return '--'
-            else:
-                raise ValueError
+        edges = dict()
 
         m = adjacency_matrix.shape[0]
         for i in range(m):
             for j in range(i, m):
-                edge_types[(i, j)] = func(adjacency_matrix[i, j],
-                                          adjacency_matrix[j, i])
+                edges[(i, j)] = Graph.compute_edge_type(
+                    m_ij=adjacency_matrix[i, j],
+                    m_ji=adjacency_matrix[j, i])
 
-        return edge_types
+        return edges
+
+    # TODO simplify
+    # TODO document
+    # TODO test
+    @staticmethod
+    def compute_penalty_edge_mismatch(edge_1, edge_2):
+
+        if edge_1 == edge_2:
+            return 0
+        elif edge_1 == EdgeType.NONE and edge_2 == EdgeType.FORWARD:
+            return 1
+        elif edge_1 == EdgeType.NONE and edge_2 == EdgeType.BACKWARD:
+            return 1
+        elif edge_1 == EdgeType.NONE and edge_2 == EdgeType.UNDIRECTED:
+            return 1
+        elif edge_1 == EdgeType.FORWARD and edge_2 == EdgeType.NONE:
+            return 1
+        elif edge_1 == EdgeType.FORWARD and edge_2 == EdgeType.BACKWARD:
+            return 1
+        elif edge_1 == EdgeType.FORWARD and edge_2 == EdgeType.UNDIRECTED:
+            return 1
+        elif edge_1 == EdgeType.BACKWARD and edge_2 == EdgeType.NONE:
+            return 1
+        elif edge_1 == EdgeType.BACKWARD and edge_2 == EdgeType.FORWARD:
+            return 1
+        elif edge_1 == EdgeType.BACKWARD and edge_2 == EdgeType.UNDIRECTED:
+            return 1
+        elif edge_1 == EdgeType.UNDIRECTED and edge_2 == EdgeType.NONE:
+            return 1
+        elif edge_1 == EdgeType.UNDIRECTED and edge_2 == EdgeType.FORWARD:
+            return 1
+        elif edge_1 == EdgeType.UNDIRECTED and edge_2 == EdgeType.BACKWARD:
+            return 1
+        else:
+            raise ImpossibleEdgeConfiguration
 
     # TODO document
     # TODO test
-    def structural_hamming_distance(self, other):
+    def structural_hamming_distance(self,
+                                    other,
+                                    penalty_edge_mismatch_func=None):
 
-        edge_types_1 = Graph.compute_edge_types(self.adjacency_matrix)
-        edge_types_2 = Graph.compute_edge_types(other.adjacency_matrix)
+        edges_1 = Graph.adjacency_matrix_to_edges(self.adjacency_matrix)
+        edges_2 = Graph.adjacency_matrix_to_edges(other.adjacency_matrix)
 
-        if set(edge_types_1.keys()) == set(edge_types_2.keys()):
+        if penalty_edge_mismatch_func is None:
+            penalty_edge_mismatch_func = Graph.compute_penalty_edge_mismatch
+
+        if set(edges_1.keys()) != set(edges_2.keys()):
             msg = 'The Structural Hamming Distances cannot be computed : the '
             msg += 'graphs cannot be compared.'
             raise GraphsCannotBeCompared(msg)
 
         shd = 0
 
-        # TODO have a general penalty function
-        for key in edge_types_1.keys():
+        for key in edges_1.keys():
 
-            shd += int(edge_types_1[key] != edge_types_2[key])
+            shd += penalty_edge_mismatch_func(
+                edge_1=edges_1[key],
+                edge_2=edges_2[key]
+            )
 
         return shd
