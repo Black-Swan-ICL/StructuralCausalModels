@@ -25,13 +25,13 @@ class DirectedAcyclicGraph(DirectedGraph):
 
         graph_for_sorting = self.to_adjacency_list_representation()
 
-        return graph_for_sorting.kahn_algorithm_topological_sorting()
+        return graph_for_sorting.kahn_algorithm_topological_ordering()
 
     def depth_first_search(self):
 
         graph_for_sorting = self.to_adjacency_list_representation()
 
-        return graph_for_sorting.dfs_topological_sorting()
+        return graph_for_sorting.dfs_topological_ordering()
 
     def compute_causal_order(self, method):
 

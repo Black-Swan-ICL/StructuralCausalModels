@@ -72,17 +72,30 @@ class Graph:
                                 nb_vertices=nb_vertices,
                                 adjacency_lists=adjacency_lists)
 
-    # TODO document
     def __str__(self):
+        """
+        Returns a user-friendly string representation of the object.
 
+        Returns
+        -------
+        str
+            A user-friendly string representation of the object.
+        """
         s = f"Graph '{self.name}', adjacency matrix:\n{self.adjacency_matrix}"
 
         return s
 
-    # TODO document
     # TODO test that with eval can reconstitute the object
     def __repr__(self):
+        """
+        Returns a string representation of the object from which it can be
+        rebuilt.
 
+        Returns
+        -------
+        str
+            A string representation of the object from which it can be rebuilt.
+        """
         s = f"Graph(name={repr(self.name)}, adjacency_matrix=np.asarray("
         s += f"{np.array2string(self.adjacency_matrix, separator=',')}))"
 
@@ -117,6 +130,7 @@ class InvalidAdjacencyLists(Exception):
     pass
 
 
+# TODO implement a method to find all the topological orderings ?
 class AlternativeGraph:
     """
     Implements a graph structure representing an adjacency list representation.
@@ -158,7 +172,7 @@ class AlternativeGraph:
                      adjacency_matrix=adjacency_matrix)
 
     # TODO test
-    def kahn_algorithm_topological_sorting(self):
+    def kahn_algorithm_topological_ordering(self):
         """
         An implementation of Kahn's algorithm for topological ordering of a
         graph. Note that it does not make sense to use this method if the
@@ -186,7 +200,7 @@ class AlternativeGraph:
         return topological_ordering
 
     # TODO test
-    def dfs_topological_sorting(self):
+    def dfs_topological_ordering(self):
         """
         An implementation of the DFS-based (Depth First Search) algorithm for
         topological ordering of a graph. Note that it does not make sense to
@@ -222,32 +236,73 @@ class AlternativeGraph:
 
         return topological_ordering
 
-    # TODO implement
-    # TODO document
-    # TODO test
-    def compute_all_topological_orderings(self):
+    def check_topological_ordering(self, ordering):
         """
-        A recursive implementation.
+        Checks whether an ordering is a correct topological ordering for the
+        graph.
+
+        Parameters
+        ----------
+        ordering : list
+            The candidate ordering.
+
+        Returns
+        -------
+        bool
+            Whether the ordering is a correct topological ordering for the
+            graph.
+
+        Raises
+        ------
+        ValueError
+            If the ordering passed is not a valid ordering for the graph.
         """
-        topological_orders = []
-        def rec_func():
+        if set(ordering) != set(range(self.nb_vertices)):
+            msg = "Ordering provided is not a valid ordering for the graph !"
+            raise ValueError(msg)
 
-            pass
+        # Build a "look-up table" of the nodes and their indices
+        index_lookup = dict()
+        for i in range(self.nb_vertices):
+            index_lookup[i] = ordering.index(i)
 
-        return topological_orders
+        # Use the definition of a topological ordering
+        for i in range(len(self.adjacency_lists)):
+            parent = i
+            children = self.adjacency_lists[parent]
+            for child in children:
+                if index_lookup[child] <= index_lookup[parent]:
+                    return False
+                else:
+                    pass
 
-    # TODO document
+        return True
+
     def __str__(self):
+        """
+        Returns a user-friendly string representation of the object.
 
+        Returns
+        -------
+        str
+            A user-friendly string representation of the object.
+        """
         s = f"AlternativeGraph '{self.name}', {self.nb_vertices} vertices, "
         s += f"adjacency lists:\n{self.adjacency_lists}"
 
         return s
 
-    # TODO document
     # TODO test that with eval can reconstitute the object
     def __repr__(self):
+        """
+        Returns a string representation of the object from which it can be
+        rebuilt.
 
+        Returns
+        -------
+        str
+            A string representation of the object from which it can be rebuilt.
+        """
         s = f"AlternativeGraph(nb_vertices={repr(self.nb_vertices)}, "
         s += f"adjacency_lists={repr(self.adjacency_lists)}, "
         s += f"name={repr(self.name)})"
@@ -309,8 +364,9 @@ if __name__ == '__main__':
     print(transformed.nb_vertices)
     print(transformed.adjacency_lists)
     print(transformed.indegrees)
-    print(f"Causal order : {transformed.dfs_topological_sorting()}")
-    print(f"Kahn : {transformed.kahn_algorithm_topological_sorting()}")
+    print(f"Causal order : {transformed.dfs_topological_ordering()}")
+    print(f"Kahn : {transformed.kahn_algorithm_topological_ordering()}")
+    print(transformed.check_topological_ordering(transformed.kahn_algorithm_topological_ordering()))
 
     print('\n\n\n')
     print(transformed)
