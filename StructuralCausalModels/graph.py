@@ -48,30 +48,6 @@ class GraphViaAdjacencyMatrix:
 
         return True
 
-    # TODO remove
-    # def to_adjacency_list_representation(self):
-    #     """
-    #     Returns an AlternativeGraph object which is equivalent to the Graph
-    #     object.
-    #
-    #     Returns
-    #     -------
-    #     AlternativeGraph
-    #         The equivalent adjacency list based representation of the graph.
-    #     """
-    #     nb_vertices = self.adjacency_matrix.shape[0]
-    #
-    #     # Build the adjacency lists
-    #     adjacency_lists = []
-    #     for i in range(nb_vertices):
-    #         adjacency_lists.append(
-    #             np.where(self.adjacency_matrix[i, :] != 0)[0].tolist()
-    #         )
-    #
-    #     return GraphViaAdjacencyLists(name=self.name,
-    #                                   nb_vertices=nb_vertices,
-    #                                   adjacency_lists=adjacency_lists)
-
     def __str__(self):
         """
         Returns a user-friendly string representation of the object.
@@ -149,26 +125,6 @@ class GraphViaAdjacencyLists:
         for i in range(self.nb_vertices):
             count = sum([int(i in adj_l) for adj_l in self.adjacency_lists])
             self.indegrees.append(count)
-
-    # TODO remove
-    # def to_adjacency_matrix_representation(self):
-    #     """
-    #     Returns a Graph object which is equivalent to the AlternativeGraph
-    #     object.
-    #
-    #     Returns
-    #     -------
-    #     Graph
-    #         The equivalent adjacency matrix based representation of the graph.
-    #     """
-    #
-    #     # Build the adjacency matrix
-    #     adjacency_matrix = np.zeros((self.nb_vertices, self.nb_vertices))
-    #     for i in range(self.nb_vertices):
-    #         adjacency_matrix[i, self.adjacency_lists[i]] = 1
-    #
-    #     return GraphViaAdjacencyMatrix(name=self.name,
-    #                                    adjacency_matrix=adjacency_matrix)
 
     def __str__(self):
         """
