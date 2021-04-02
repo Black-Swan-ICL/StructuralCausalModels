@@ -86,7 +86,6 @@ class Graph:
         return res
 
     # TODO document
-    # TODO test
     @staticmethod
     def adjacency_matrix_to_adjacency_lists(adjacency_matrix):
 
@@ -102,7 +101,6 @@ class Graph:
         return adjacency_lists
 
     # TODO document
-    # TODO test
     @staticmethod
     def adjacency_lists_to_adjacency_matrix(adjacency_lists):
         nb_vertices = len(adjacency_lists)
@@ -139,7 +137,6 @@ class Graph:
             raise ImpossibleEdgeConfiguration
 
     # TODO document
-    # TODO test
     @staticmethod
     def adjacency_matrix_to_edges(adjacency_matrix):
 

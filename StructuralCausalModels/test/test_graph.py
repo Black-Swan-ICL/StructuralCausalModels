@@ -34,6 +34,67 @@ def test_validate_adjacency_matrix(matrix, expected):
     assert Graph.validate_binary_matrix(matrix) == expected
 
 
+@pytest.mark.parametrize(
+    "adjacency_matrix_1, adjacency_matrix_2, expected_shd",
+    [
+        (
+                np.asarray([
+                    [0, 1, 1, 1],
+                    [0, 0, 1, 0],
+                    [0, 0, 0, 0],
+                    [0, 1, 1, 0]
+                ]),
+                np.asarray([
+                    [0, 1, 1, 1],
+                    [0, 0, 1, 1],
+                    [0, 0, 0, 1],
+                    [0, 0, 0, 0]
+                ]),
+                2
+        ),
+        (
+                np.asarray([
+                    [0, 0, 1, 1],
+                    [1, 0, 1, 1],
+                    [0, 0, 0, 1],
+                    [0, 0, 1, 0]
+                ]),
+                np.asarray([
+                    [0, 1, 1, 1],
+                    [1, 0, 1, 1],
+                    [0, 0, 0, 1],
+                    [0, 0, 1, 0]
+                ]),
+                1
+        ),
+        (
+                np.asarray([
+                    [0, 1, 1, 1],
+                    [0, 0, 1, 0],
+                    [0, 0, 0, 0],
+                    [0, 1, 1, 0]
+                ]),
+                np.asarray([
+                    [0, 1, 1, 1],
+                    [1, 0, 1, 1],
+                    [0, 0, 0, 1],
+                    [0, 0, 1, 0]
+                ]),
+                3
+        ),
+    ]
+)
+def test_structural_hamming_distance(adjacency_matrix_1, adjacency_matrix_2,
+                                     expected_shd):
+
+    graph_1 = Graph(adjacency_matrix=adjacency_matrix_1)
+    graph_2 = Graph(adjacency_matrix=adjacency_matrix_2)
+
+    actual_shd = graph_1.structural_hamming_distance(graph_2)
+
+    assert expected_shd == actual_shd
+
+
 # TODO test further ?
 @pytest.mark.parametrize(
     "adjacency_matrix, expected_adjacency_lists",
@@ -122,64 +183,3 @@ def test_adjacency_matrix_to_edges(adjacency_matrix, expected_edge_types):
     actual_edge_types = Graph.adjacency_matrix_to_edges(adjacency_matrix)
 
     assert actual_edge_types == expected_edge_types
-
-
-@pytest.mark.parametrize(
-    "adjacency_matrix_1, adjacency_matrix_2, expected_shd",
-    [
-        (
-            np.asarray([
-                [0, 1, 1, 1],
-                [0, 0, 1, 0],
-                [0, 0, 0, 0],
-                [0, 1, 1, 0]
-            ]),
-            np.asarray([
-                [0, 1, 1, 1],
-                [0, 0, 1, 1],
-                [0, 0, 0, 1],
-                [0, 0, 0, 0]
-            ]),
-            2
-        ),
-        (
-            np.asarray([
-                [0, 0, 1, 1],
-                [1, 0, 1, 1],
-                [0, 0, 0, 1],
-                [0, 0, 1, 0]
-            ]),
-            np.asarray([
-                [0, 1, 1, 1],
-                [1, 0, 1, 1],
-                [0, 0, 0, 1],
-                [0, 0, 1, 0]
-            ]),
-            1
-        ),
-        (
-                np.asarray([
-                    [0, 1, 1, 1],
-                    [0, 0, 1, 0],
-                    [0, 0, 0, 0],
-                    [0, 1, 1, 0]
-                ]),
-                np.asarray([
-                    [0, 1, 1, 1],
-                    [1, 0, 1, 1],
-                    [0, 0, 0, 1],
-                    [0, 0, 1, 0]
-                ]),
-                3
-        ),
-    ]
-)
-def test_structural_hamming_distance(adjacency_matrix_1, adjacency_matrix_2,
-                                     expected_shd):
-
-    graph_1 = Graph(adjacency_matrix=adjacency_matrix_1)
-    graph_2 = Graph(adjacency_matrix=adjacency_matrix_2)
-
-    actual_shd = graph_1.structural_hamming_distance(graph_2)
-
-    assert expected_shd == actual_shd
