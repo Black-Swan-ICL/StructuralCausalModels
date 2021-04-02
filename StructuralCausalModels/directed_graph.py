@@ -7,6 +7,7 @@ from StructuralCausalModels.graph_via_adjacency_matrix import \
 
 class DirectedGraph(Graph):
 
+    # TODO document
     def __init__(self, adjacency_matrix, name=''):
 
         if not DirectedGraph.validate_directed_graph_adjacency_matrix(

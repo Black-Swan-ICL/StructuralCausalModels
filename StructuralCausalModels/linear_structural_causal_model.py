@@ -17,9 +17,11 @@ class InvalidNumberOfExogenousVariables(Exception):
 
 class LinearStructuralCausalModel(StructuralCausalModel):
 
+    # TODO document
     def __init__(self, name, nb_var, structural_equations):
         super().__init__(name, nb_var, structural_equations)
 
+    # TODO document
     @staticmethod
     def create_from_coefficient_matrix(name, matrix, causal_order,
                                        exogenous_variables):

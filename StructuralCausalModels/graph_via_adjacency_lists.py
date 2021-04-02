@@ -7,6 +7,7 @@ class GraphViaAdjacencyLists:
     Implements a graph structure representing an adjacency list representation.
     """
 
+    # TODO document
     def __init__(self, nb_vertices, adjacency_lists, name=''):
 
         if not len(adjacency_lists) == nb_vertices:

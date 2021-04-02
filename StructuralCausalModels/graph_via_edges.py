@@ -78,7 +78,7 @@ class GraphViaEdges:
                                     other,
                                     penalty_edge_mismatch_func=None):
         """
-        Computes the Structual Hamming Distance between two graphs. By default
+        Computes the Structural Hamming Distance between two graphs. By default
         it is equal to the number of edges in the graphs that are not of the
         same type. A different weighted scheme for penalty computation may be
         provided (we may want to penalise the presence of an edge in the

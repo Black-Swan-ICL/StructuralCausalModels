@@ -78,19 +78,19 @@ class GraphViaAdjacencyMatrix:
 
     def __eq__(self, other):
         """
-        Checks whether the object is equal to another Graph object. Two Graph
-        objects are equal if they have the same adjacency matrix and the same
-        names.
+        Checks whether the object is equal to another GraphViaAdjacencyMatrix
+        object. Two GraphViaAdjacencyMatrix objects are equal if they have the
+        same adjacency matrix and the same names.
 
         Parameters
         ----------
         other : GraphViaAdjacencyMatrix
-            The other Graph object.
+            The other GraphViaAdjacencyMatrix object.
 
         Returns
         -------
         bool
-            Whether the two Graph objects are equal.
+            Whether the two GraphViaAdjacencyMatrix objects are equal.
         """
         if not np.all(self.adjacency_matrix == other.adjacency_matrix):
             return False

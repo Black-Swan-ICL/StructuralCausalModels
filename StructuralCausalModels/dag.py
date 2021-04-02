@@ -19,6 +19,7 @@ class InvalidOrdering(Exception):
 # TODO add a method to compute all topological orderings ?
 class DirectedAcyclicGraph(DirectedGraph):
 
+    # TODO document
     def __init__(self, adjacency_matrix, name=''):
 
         if not DirectedAcyclicGraph.validate_dag_adjacency_matrix(

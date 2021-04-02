@@ -10,6 +10,7 @@ from StructuralCausalModels.graph_via_edges import EdgeType, GraphViaEdges, \
 
 class Graph:
 
+    # TODO document
     def __init__(self, adjacency_matrix, name=''):
         # Representation of the graph via an adjacency matrix
         matrix_based = GraphViaAdjacencyMatrix(
@@ -35,18 +36,22 @@ class Graph:
         self.adjacency_list_representation = list_based
         self.edge_representation = edge_based
 
+    # TODO document
     @staticmethod
     def validate_binary_matrix(matrix):
         return GraphViaAdjacencyMatrix.validate_binary_matrix(matrix)
 
+    # TODO document
     @property
     def adjacency_matrix(self):
         return self.adjacency_matrix_representation.adjacency_matrix
 
+    # TODO document
     @property
     def name(self):
         return self.adjacency_matrix_representation.name
 
+    # TODO document
     @adjacency_matrix.setter
     def adjacency_matrix(self, new_adjacency_matrix):
         # Re-generate the adjacency matrix based representation of the graph
