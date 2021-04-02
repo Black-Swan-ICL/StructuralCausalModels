@@ -330,30 +330,42 @@ class Graph:
 
         if edge_1 == edge_2:
             return 0
-        elif edge_1 == EdgeType.NONE and edge_2 == EdgeType.FORWARD:
+        elif {edge_1, edge_2} == {EdgeType.NONE, EdgeType.FORWARD}:
             return 1
-        elif edge_1 == EdgeType.NONE and edge_2 == EdgeType.BACKWARD:
+        elif {edge_1, edge_2} == {EdgeType.NONE, EdgeType.BACKWARD}:
             return 1
-        elif edge_1 == EdgeType.NONE and edge_2 == EdgeType.UNDIRECTED:
+        elif {edge_1, edge_2} == {EdgeType.NONE, EdgeType.UNDIRECTED}:
             return 1
-        elif edge_1 == EdgeType.FORWARD and edge_2 == EdgeType.NONE:
+        elif {edge_1, edge_2} == {EdgeType.FORWARD, EdgeType.BACKWARD}:
             return 1
-        elif edge_1 == EdgeType.FORWARD and edge_2 == EdgeType.BACKWARD:
+        elif {edge_1, edge_2} == {EdgeType.FORWARD, EdgeType.UNDIRECTED}:
             return 1
-        elif edge_1 == EdgeType.FORWARD and edge_2 == EdgeType.UNDIRECTED:
+        elif {edge_1, edge_2} == {EdgeType.BACKWARD, EdgeType.UNDIRECTED}:
             return 1
-        elif edge_1 == EdgeType.BACKWARD and edge_2 == EdgeType.NONE:
-            return 1
-        elif edge_1 == EdgeType.BACKWARD and edge_2 == EdgeType.FORWARD:
-            return 1
-        elif edge_1 == EdgeType.BACKWARD and edge_2 == EdgeType.UNDIRECTED:
-            return 1
-        elif edge_1 == EdgeType.UNDIRECTED and edge_2 == EdgeType.NONE:
-            return 1
-        elif edge_1 == EdgeType.UNDIRECTED and edge_2 == EdgeType.FORWARD:
-            return 1
-        elif edge_1 == EdgeType.UNDIRECTED and edge_2 == EdgeType.BACKWARD:
-            return 1
+        # elif edge_1 == EdgeType.NONE and edge_2 == EdgeType.FORWARD:
+        #     return 1
+        # elif edge_1 == EdgeType.NONE and edge_2 == EdgeType.BACKWARD:
+        #     return 1
+        # elif edge_1 == EdgeType.NONE and edge_2 == EdgeType.UNDIRECTED:
+        #     return 1
+        # elif edge_1 == EdgeType.FORWARD and edge_2 == EdgeType.NONE:
+        #     return 1
+        # elif edge_1 == EdgeType.FORWARD and edge_2 == EdgeType.BACKWARD:
+        #     return 1
+        # elif edge_1 == EdgeType.FORWARD and edge_2 == EdgeType.UNDIRECTED:
+        #     return 1
+        # elif edge_1 == EdgeType.BACKWARD and edge_2 == EdgeType.NONE:
+        #     return 1
+        # elif edge_1 == EdgeType.BACKWARD and edge_2 == EdgeType.FORWARD:
+        #     return 1
+        # elif edge_1 == EdgeType.BACKWARD and edge_2 == EdgeType.UNDIRECTED:
+        #     return 1
+        # elif edge_1 == EdgeType.UNDIRECTED and edge_2 == EdgeType.NONE:
+        #     return 1
+        # elif edge_1 == EdgeType.UNDIRECTED and edge_2 == EdgeType.FORWARD:
+        #     return 1
+        # elif edge_1 == EdgeType.UNDIRECTED and edge_2 == EdgeType.BACKWARD:
+        #     return 1
         else:
             raise ImpossibleEdgeConfiguration
 
