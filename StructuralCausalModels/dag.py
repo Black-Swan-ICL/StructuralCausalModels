@@ -1,7 +1,8 @@
 import copy
 import numpy as np
 
-from StructuralCausalModels.graph import InvalidAdjacencyMatrix
+from StructuralCausalModels.graph_via_adjacency_matrix import \
+    InvalidAdjacencyMatrix
 from StructuralCausalModels.directed_graph import DirectedGraph
 
 

@@ -1,8 +1,7 @@
 import pytest
 import numpy as np
 
-from StructuralCausalModels.graph import GraphViaAdjacencyMatrix, \
-    GraphViaAdjacencyLists, Graph, EdgeType
+from StructuralCausalModels.graph import Graph, EdgeType
 
 
 _adjacency_matrix = np.asarray([
@@ -17,25 +16,6 @@ _adjacency_lists = [
     [],
     [1, 2]
 ]
-
-
-@pytest.fixture
-def via_matrix_example():
-
-    example = GraphViaAdjacencyMatrix(adjacency_matrix=_adjacency_matrix,
-                                      name='')
-
-    return example
-
-
-@pytest.fixture
-def via_list_example():
-
-    example = GraphViaAdjacencyLists(adjacency_lists=_adjacency_lists,
-                                     nb_vertices=4,
-                                     name='')
-
-    return example
 
 
 @pytest.mark.parametrize(
@@ -91,20 +71,6 @@ def test_adjacency_lists_to_adjacency_matrix(adjacency_lists,
     assert np.all(actual_adjacency_matrix == expected_adjacency_matrix)
 
 
-def test_can_rebuild_graph_via_matrix(via_matrix_example):
-
-    reconstructed = eval(repr(via_matrix_example))
-
-    assert reconstructed == via_matrix_example
-
-
-def test_can_rebuild_graph_via_list(via_list_example):
-
-    reconstructed = eval(repr(via_list_example))
-
-    assert reconstructed == via_list_example
-
-
 @pytest.mark.parametrize(
     "adjacency_matrix, expected_edge_types",
     [
@@ -156,20 +122,6 @@ def test_adjacency_matrix_to_edges(adjacency_matrix, expected_edge_types):
     actual_edge_types = Graph.adjacency_matrix_to_edges(adjacency_matrix)
 
     assert actual_edge_types == expected_edge_types
-
-
-@pytest.mark.parametrize(
-    "edge_1, edge_2, expected_penalty",
-    [
-        (EdgeType.FORWARD, EdgeType.FORWARD, 0),
-        (EdgeType.UNDIRECTED, EdgeType.NONE, 1),
-    ]
-)
-def test_compute_penalty_edge_mismatch(edge_1, edge_2, expected_penalty):
-
-    actual_penalty = Graph.compute_penalty_edge_mismatch(edge_1, edge_2)
-
-    assert actual_penalty == expected_penalty
 
 
 @pytest.mark.parametrize(
