@@ -54,20 +54,41 @@ def test_validate_adjacency_matrix(matrix, expected):
     assert Graph.validate_binary_matrix(matrix) == expected
 
 
-def test_matrix_to_list_representation_transformation(via_matrix_example,
-                                                      via_list_example):
+# TODO test further ?
+@pytest.mark.parametrize(
+    "adjacency_matrix, expected_adjacency_lists",
+    [
+        (_adjacency_matrix, _adjacency_lists),
+    ]
+)
+def test_adjacency_matrix_to_adjacency_lists(adjacency_matrix,
+                                             expected_adjacency_lists):
 
-    actual = via_matrix_example.to_adjacency_list_representation()
+    actual_adjacency_lists = Graph.adjacency_matrix_to_adjacency_lists(
+        adjacency_matrix=adjacency_matrix
+    )
 
-    assert actual == via_list_example
+    adjacency_lists_equal = []
+    for l1, l2 in zip(actual_adjacency_lists, expected_adjacency_lists):
+        adjacency_lists_equal.append(set(l1) == set(l2))
+
+    assert all(adjacency_lists_equal)
 
 
-def test_list_to_matrix_representation_transformation(via_list_example,
-                                                      via_matrix_example):
+@pytest.mark.parametrize(
+    "adjacency_lists, expected_adjacency_matrix",
+    [
+        (_adjacency_lists, _adjacency_matrix),
+    ]
+)
+def test_adjacency_lists_to_adjacency_matrix(adjacency_lists,
+                                             expected_adjacency_matrix):
 
-    actual = via_list_example.to_adjacency_matrix_representation()
+    actual_adjacency_matrix = Graph.adjacency_lists_to_adjacency_matrix(
+        adjacency_lists=adjacency_lists
+    )
 
-    assert actual == via_matrix_example
+    assert np.all(actual_adjacency_matrix == expected_adjacency_matrix)
 
 
 def test_can_rebuild_graph_via_matrix(via_matrix_example):
