@@ -44,4 +44,3 @@ def test_can_rebuild_graph_from_edges(graph_via_edges_example):
     reconstructed = eval(repr(graph_via_edges_example))
 
     assert reconstructed == graph_via_edges_example
-
