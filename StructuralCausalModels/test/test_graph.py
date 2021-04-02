@@ -135,3 +135,78 @@ def test_adjacency_matrix_to_edges(adjacency_matrix, expected_edge_types):
     actual_edge_types = Graph.adjacency_matrix_to_edges(adjacency_matrix)
 
     assert actual_edge_types == expected_edge_types
+
+
+@pytest.mark.parametrize(
+    "edge_1, edge_2, expected_penalty",
+    [
+        (EdgeType.FORWARD, EdgeType.FORWARD, 0),
+        (EdgeType.UNDIRECTED, EdgeType.NONE, 1),
+    ]
+)
+def test_compute_penalty_edge_mismatch(edge_1, edge_2, expected_penalty):
+
+    actual_penalty = Graph.compute_penalty_edge_mismatch(edge_1, edge_2)
+
+    assert actual_penalty == expected_penalty
+
+
+@pytest.mark.parametrize(
+    "adjacency_matrix_1, adjacency_matrix_2, expected_shd",
+    [
+        (
+            np.asarray([
+                [0, 1, 1, 1],
+                [0, 0, 1, 0],
+                [0, 0, 0, 0],
+                [0, 1, 1, 0]
+            ]),
+            np.asarray([
+                [0, 1, 1, 1],
+                [0, 0, 1, 1],
+                [0, 0, 0, 1],
+                [0, 0, 0, 0]
+            ]),
+            2
+        ),
+        (
+            np.asarray([
+                [0, 0, 1, 1],
+                [1, 0, 1, 1],
+                [0, 0, 0, 1],
+                [0, 0, 1, 0]
+            ]),
+            np.asarray([
+                [0, 1, 1, 1],
+                [1, 0, 1, 1],
+                [0, 0, 0, 1],
+                [0, 0, 1, 0]
+            ]),
+            1
+        ),
+        (
+                np.asarray([
+                    [0, 1, 1, 1],
+                    [0, 0, 1, 0],
+                    [0, 0, 0, 0],
+                    [0, 1, 1, 0]
+                ]),
+                np.asarray([
+                    [0, 1, 1, 1],
+                    [1, 0, 1, 1],
+                    [0, 0, 0, 1],
+                    [0, 0, 1, 0]
+                ]),
+                3
+        ),
+    ]
+)
+def test_structural_hamming_distance(adjacency_matrix_1, adjacency_matrix_2,
+                                     expected_shd):
+
+    graph_1 = Graph(adjacency_matrix=adjacency_matrix_1)
+    graph_2 = Graph(adjacency_matrix=adjacency_matrix_2)
+
+    actual_shd = graph_1.structural_hamming_distance(graph_2)
+
+    assert expected_shd == actual_shd

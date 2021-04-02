@@ -307,7 +307,6 @@ class Graph:
             raise ImpossibleEdgeConfiguration
 
     # TODO document
-    # TODO test
     @staticmethod
     def adjacency_matrix_to_edges(adjacency_matrix):
 
@@ -344,7 +343,6 @@ class Graph:
             raise ImpossibleEdgeConfiguration
 
     # TODO document
-    # TODO test
     def structural_hamming_distance(self,
                                     other,
                                     penalty_edge_mismatch_func=None):
