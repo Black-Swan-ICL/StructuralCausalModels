@@ -2,7 +2,7 @@ import pytest
 import numpy as np
 
 from StructuralCausalModels.graph import GraphViaAdjacencyMatrix, \
-    GraphViaAdjacencyLists, Graph
+    GraphViaAdjacencyLists, Graph, EdgeType
 
 
 _adjacency_matrix = np.asarray([
@@ -95,16 +95,16 @@ def test_can_rebuild_graph_via_list(via_list_example):
                 [0, 1, 1, 0]
             ]),
             {
-                (0, 0): 'no edge',
-                (0, 1): '->',
-                (0, 2): '->',
-                (0, 3): '->',
-                (1, 1): 'no edge',
-                (1, 2): '->',
-                (1, 3): '<-',
-                (2, 2): 'no edge',
-                (2, 3): '<-',
-                (3, 3): 'no edge'
+                (0, 0): EdgeType.NONE,
+                (0, 1): EdgeType.FORWARD,
+                (0, 2): EdgeType.FORWARD,
+                (0, 3): EdgeType.FORWARD,
+                (1, 1): EdgeType.NONE,
+                (1, 2): EdgeType.FORWARD,
+                (1, 3): EdgeType.BACKWARD,
+                (2, 2): EdgeType.NONE,
+                (2, 3): EdgeType.BACKWARD,
+                (3, 3): EdgeType.NONE
             }
         ),
         (
@@ -115,23 +115,23 @@ def test_can_rebuild_graph_via_list(via_list_example):
                     [0, 0, 1, 0]
                 ]),
                 {
-                    (0, 0): 'no edge',
-                    (0, 1): '--',
-                    (0, 2): '->',
-                    (0, 3): '->',
-                    (1, 1): 'no edge',
-                    (1, 2): '->',
-                    (1, 3): '->',
-                    (2, 2): 'no edge',
-                    (2, 3): '--',
-                    (3, 3): 'no edge'
+                    (0, 0): EdgeType.NONE,
+                    (0, 1): EdgeType.UNDIRECTED,
+                    (0, 2): EdgeType.FORWARD,
+                    (0, 3): EdgeType.FORWARD,
+                    (1, 1): EdgeType.NONE,
+                    (1, 2): EdgeType.FORWARD,
+                    (1, 3): EdgeType.FORWARD,
+                    (2, 2): EdgeType.NONE,
+                    (2, 3): EdgeType.UNDIRECTED,
+                    (3, 3): EdgeType.NONE
                 }
         ),
 
     ]
 )
-def test_compute_edge_types(adjacency_matrix, expected_edge_types):
+def test_adjacency_matrix_to_edges(adjacency_matrix, expected_edge_types):
 
-    actual_edge_types = Graph.compute_edge_types(adjacency_matrix)
+    actual_edge_types = Graph.adjacency_matrix_to_edges(adjacency_matrix)
 
     assert actual_edge_types == expected_edge_types

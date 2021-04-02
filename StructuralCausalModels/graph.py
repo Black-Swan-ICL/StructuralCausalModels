@@ -322,9 +322,7 @@ class Graph:
 
         return edges
 
-    # TODO simplify
     # TODO document
-    # TODO test
     @staticmethod
     def compute_penalty_edge_mismatch(edge_1, edge_2):
 
@@ -342,30 +340,6 @@ class Graph:
             return 1
         elif {edge_1, edge_2} == {EdgeType.BACKWARD, EdgeType.UNDIRECTED}:
             return 1
-        # elif edge_1 == EdgeType.NONE and edge_2 == EdgeType.FORWARD:
-        #     return 1
-        # elif edge_1 == EdgeType.NONE and edge_2 == EdgeType.BACKWARD:
-        #     return 1
-        # elif edge_1 == EdgeType.NONE and edge_2 == EdgeType.UNDIRECTED:
-        #     return 1
-        # elif edge_1 == EdgeType.FORWARD and edge_2 == EdgeType.NONE:
-        #     return 1
-        # elif edge_1 == EdgeType.FORWARD and edge_2 == EdgeType.BACKWARD:
-        #     return 1
-        # elif edge_1 == EdgeType.FORWARD and edge_2 == EdgeType.UNDIRECTED:
-        #     return 1
-        # elif edge_1 == EdgeType.BACKWARD and edge_2 == EdgeType.NONE:
-        #     return 1
-        # elif edge_1 == EdgeType.BACKWARD and edge_2 == EdgeType.FORWARD:
-        #     return 1
-        # elif edge_1 == EdgeType.BACKWARD and edge_2 == EdgeType.UNDIRECTED:
-        #     return 1
-        # elif edge_1 == EdgeType.UNDIRECTED and edge_2 == EdgeType.NONE:
-        #     return 1
-        # elif edge_1 == EdgeType.UNDIRECTED and edge_2 == EdgeType.FORWARD:
-        #     return 1
-        # elif edge_1 == EdgeType.UNDIRECTED and edge_2 == EdgeType.BACKWARD:
-        #     return 1
         else:
             raise ImpossibleEdgeConfiguration
 
