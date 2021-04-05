@@ -16,10 +16,6 @@ sys.path.insert(0, os.path.abspath('../../'))
 
 # See the following link for why this is needed
 # https://docs.readthedocs.io/en/latest/faq.html#i-get-import-errors-on-libraries-that-depend-on-c-modules
-# import mock
-# MOCK_MODULES = ['numpy', 'scipy', 'pandas', 'pytest']
-# for mod_name in MOCK_MODULES:
-#     sys.modules[mod_name] = mock.Mock()
 autodoc_mock_imports = ['numpy', 'scipy', 'pandas', 'pytest']
 
 
