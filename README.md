@@ -17,3 +17,5 @@ The representations implemented at present are:
 - via adjacency lists,
 - via edges ("typed" edges : no edge, forward, backward or undirected 
   edge).
+  
+[Documentation available here](https://pyscms.readthedocs.io/en/latest/)
