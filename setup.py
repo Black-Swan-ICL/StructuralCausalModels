@@ -23,6 +23,6 @@ setup(
         'Topic :: Scientific/Engineering :: Information Analysis',
         'Intended Audience :: Science/Research',
     ],
-    packages=find_packages(),
-    install_requires=['numpy', 'scipy', 'pandas', 'pytest']
+    # packages=find_packages(),
+    # install_requires=['numpy', 'scipy', 'pandas', 'pytest']
 )
