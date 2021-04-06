@@ -1,3 +1,4 @@
+# TODO reorganise and document
 import pytest
 import numpy as np
 

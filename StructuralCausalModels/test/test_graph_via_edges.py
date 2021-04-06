@@ -1,3 +1,4 @@
+# TODO reorganise and document
 import pytest
 
 from StructuralCausalModels.graph_via_edges import EdgeType, GraphViaEdges
