@@ -7,7 +7,7 @@ from StructuralCausalModels.directed_graph import DirectedGraph
 
 
 class TopologicalOrderingMethodNotImplemented(Exception):
-    """Raised when the requested topological ordering method is not implemented,
+    """Raised when the requested topological ordering method is not implemented.
     """
 
     pass
