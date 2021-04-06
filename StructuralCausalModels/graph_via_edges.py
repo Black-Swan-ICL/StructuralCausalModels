@@ -2,6 +2,8 @@ from enum import Enum
 
 
 class EdgeType(Enum):
+    """An enumeration to represent possible types of edges between vertices.
+    """
     NONE = 'no edge'
     FORWARD = '->'
     BACKWARD = '<-'
@@ -21,19 +23,36 @@ class EdgeType(Enum):
 
 
 class GraphsCannotBeCompared(Exception):
+    """Raised when two graphs do not have the same vertex set.
+    """
 
     pass
 
 
 class ImpossibleEdgeConfiguration(Exception):
-
+    """Raised when an edge is not one of the possible types of edges.
+    """
     pass
 
 
 class GraphViaEdges:
+    """Implements a graph structure using a representation via typed edges.
+
+    Typed edges make it possible than :math:`X_i` and :math:`X_j` have no edge
+    between them, or that they have an undirected edge, or a forward edge
+    :math:`X_i \longrightarrow X_j` or a backward edge
+    :math:`X_i \longleftarrow X_j`.
+
+    Parameters
+    ----------
+    edges : dict
+        A dictionary defining the edges of the graph in the format (i, j) :
+        EdgeType.FORWARD for :math:`X_i \longrightarrow X_j`, for example.
+    name : str, optional
+        The name of the object created (default is '').
+    """
 
     # TODO parameter validation
-    # TODO document
     def __init__(self, edges, name=''):
         self.edges = edges
         self.name = name
@@ -55,6 +74,11 @@ class GraphViaEdges:
         -------
         float
             The penalty incurred.
+
+        Raises
+        ------
+        ImpossibleEdgeConfiguration
+            If one of the edges is not one of the possible types of edges.
         """
 
         if edge_1 == edge_2:
