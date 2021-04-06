@@ -1,4 +1,5 @@
 # StructuralCausalModels
+## Description
 A Python package implementing Structural Causal Models (SCMs). 
 
 The package makes it possible to go from Structural Causal Models to 
@@ -18,4 +19,6 @@ The representations implemented at present are:
 - via edges ("typed" edges : no edge, forward, backward or undirected 
   edge).
   
-[Documentation available here](https://pyscms.readthedocs.io/en/latest/)
+## Documentation
+The documentation for the package is available 
+[here](https://pyscms.readthedocs.io/en/latest/).
