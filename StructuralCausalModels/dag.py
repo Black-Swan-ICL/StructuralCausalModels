@@ -7,12 +7,15 @@ from StructuralCausalModels.directed_graph import DirectedGraph
 
 
 class TopologicalOrderingMethodNotImplemented(Exception):
+    """Raised when the requested topological ordering method is not implemented,
+    """
 
     pass
 
 
 class InvalidOrdering(Exception):
-
+    """Raised when an ordering is not a valid causal ordering for a given DAG.
+    """
     pass
 
 
