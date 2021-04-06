@@ -7,8 +7,9 @@ class InvalidAdjacencyLists(Exception):
 class GraphViaAdjacencyLists:
     """Implements a graph structure using an adjacency list representation.
 
-    As an extra-security, the number of vertices must be provided as well as
-    the adjacency lists.
+    As an "extra security", the number of vertices must be provided as well as
+    the adjacency lists ; there must be as many vertices as there are adjacency
+    lists.
 
     Parameters
     ----------

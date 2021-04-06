@@ -19,7 +19,9 @@ class LinearStructuralCausalModel(StructuralCausalModel):
 
     # TODO document
     def __init__(self, name, nb_var, structural_equations):
-        super().__init__(name, nb_var, structural_equations)
+        super().__init__(name=name,
+                         nb_var=nb_var,
+                         structural_equations=structural_equations)
 
     # TODO document
     @staticmethod

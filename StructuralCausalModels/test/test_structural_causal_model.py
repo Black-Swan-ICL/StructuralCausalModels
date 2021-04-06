@@ -56,7 +56,9 @@ def deterministic_scm():
 
     equations = [equation_0, equation_3, equation_1, equation_2]
 
-    scm = StructuralCausalModel('deterministic_scm', len(equations), equations)
+    scm = StructuralCausalModel(name='deterministic_scm',
+                                nb_var=len(equations),
+                                structural_equations=equations)
 
     return scm
 
