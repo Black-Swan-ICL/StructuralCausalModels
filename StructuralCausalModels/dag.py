@@ -18,8 +18,26 @@ class InvalidOrdering(Exception):
 
 # TODO add a method to compute all topological orderings ?
 class DirectedAcyclicGraph(DirectedGraph):
+    """A class to represent Directed Acyclic Graphs (DAGs).
 
-    # TODO document
+    A DirectedAcyclicGraph object is a representation of a DAG. It is defined by
+    the adjacency matrix of the graph ; validation will be performed to check
+    that the graph defined is directed and acyclic. An exception will be raised
+    otherwise.
+
+    Parameters
+    ----------
+    adjacency_matrix : array_like
+        The adjacency matrix of the DAG.
+    name : str, optional
+        The name of the object created (default is '').
+
+    Raises
+    ------
+    InvalidAdjacencyMatrix
+        If the adjacency matrix does not define a directed and acyclic graph.
+    """
+
     def __init__(self, adjacency_matrix, name=''):
 
         if not DirectedAcyclicGraph.validate_dag_adjacency_matrix(
@@ -88,44 +106,44 @@ class DirectedAcyclicGraph(DirectedGraph):
 
         return topological_ordering
 
-    # TODO to correct, does not work !
-    def depth_first_search(self):
-        """
-        An implementation of the DFS-based (Depth First Search) algorithm for
-        topological ordering of a graph. Note that it does not make sense to
-        use this method if the graph is not in fact a DAG !
-
-        Returns
-        -------
-        list
-            A topological ordering of the graph.
-        """
-        list_repr_graph = self.adjacency_list_representation
-
-        def rec_func(current_vertex, visited_vertices, acc):
-
-            visited_vertices[current_vertex] = True
-
-            for neighbour in list_repr_graph.adjacency_lists[current_vertex]:
-                if not visited_vertices[neighbour]:
-                    rec_func(current_vertex=neighbour,
-                             visited_vertices=visited_vertices,
-                             acc=acc)
-
-            acc.append(current_vertex)
-
-        already_visited_vertices = [False] * list_repr_graph.nb_vertices
-        stack = []
-
-        for i in range(list_repr_graph.nb_vertices):
-            if not already_visited_vertices[i]:
-                rec_func(current_vertex=i,
-                         visited_vertices=already_visited_vertices,
-                         acc=stack)
-
-        topological_ordering = stack[::-1]
-
-        return topological_ordering
+    # TODO to correct, does not work ! Uncomment then
+    # def depth_first_search(self):
+    #     """
+    #     An implementation of the DFS-based (Depth First Search) algorithm for
+    #     topological ordering of a graph. Note that it does not make sense to
+    #     use this method if the graph is not in fact a DAG !
+    #
+    #     Returns
+    #     -------
+    #     list
+    #         A topological ordering of the graph.
+    #     """
+    #     list_repr_graph = self.adjacency_list_representation
+    #
+    #     def rec_func(current_vertex, visited_vertices, acc):
+    #
+    #         visited_vertices[current_vertex] = True
+    #
+    #         for neighbour in list_repr_graph.adjacency_lists[current_vertex]:
+    #             if not visited_vertices[neighbour]:
+    #                 rec_func(current_vertex=neighbour,
+    #                          visited_vertices=visited_vertices,
+    #                          acc=acc)
+    #
+    #         acc.append(current_vertex)
+    #
+    #     already_visited_vertices = [False] * list_repr_graph.nb_vertices
+    #     stack = []
+    #
+    #     for i in range(list_repr_graph.nb_vertices):
+    #         if not already_visited_vertices[i]:
+    #             rec_func(current_vertex=i,
+    #                      visited_vertices=already_visited_vertices,
+    #                      acc=stack)
+    #
+    #     topological_ordering = stack[::-1]
+    #
+    #     return topological_ordering
 
     def compute_causal_order(self, method):
         """
