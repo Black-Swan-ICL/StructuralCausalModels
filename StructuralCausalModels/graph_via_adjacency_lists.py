@@ -17,7 +17,7 @@ class GraphViaAdjacencyLists:
     adjacency_lists : list
         The list of adjacency lists defining the graph. The ordering in the list
         is the natural one : adjacency_lists[0] is the adjacency list for vertex
-        X_0 etc.
+        :math:`X_0` etc.
     name : str, optional
         The name of the object created (default is '').
 
@@ -26,7 +26,7 @@ class GraphViaAdjacencyLists:
     indegrees : list
         The list of in-degrees of the vertices i.e. the number of edges pointing
         to the vertices. The ordering in the list is the natural one :
-        indegrees[0] is the in-degree for vertex X_0 etc.
+        indegrees[0] is the in-degree for vertex :math:`X_0` etc.
 
     Raises
     ------

@@ -56,23 +56,29 @@ class DirectedAcyclicGraph(DirectedGraph):
         """
         Checks that a matrix is a valid adjacency matrix for a directed acyclic
         graph. Uses the characterisation of acyclicity established by D. Wei, T.
-        Gao and Y. Yu in "DAGs with No Fears : A Closer Look at Continuous
-        Optimization for Learning Bayesian Networks" (2020) : a directed graph
-        is acyclic if and only if its adjacency matrix is nilpotent.
+        Gao and Y. Yu in [1]_ : a directed graph is acyclic if and only if its
+        adjacency matrix is nilpotent.
 
         Parameters
         ----------
         matrix : array_like
             The matrix to check.
-        atol : float
+        atol : float, optional
             The absolute tolerance used to check that the eigenvalues are all
-            equal to 0.
+            equal to 0 (default is :math:`10^{-6}`).
 
         Returns
         -------
         bool
             Whether the matrix to check is a valid adjacency matrix for a
             directed acyclic graph.
+
+        Notes
+        -----
+        .. [1] Wei, D., Gao, T. and Yu, Y. "DAGs with No Fears : A Closer Look
+           at Continuous Optimization for Learning Bayesian
+           Networks". *Advances in Neural Information Processing Systems*,
+           volume 33, pp. 3895-3906, 2020.
         """
         if not DirectedGraph.validate_directed_graph_adjacency_matrix(matrix):
             return False
@@ -230,9 +236,10 @@ class DirectedAcyclicGraph(DirectedGraph):
     def causal_order_to_dag(causal_order):
         """
         Generates the maximally connected DAG that is compatible with the causal
-        order provided i.e. for all j such that j > i in the causal order, there
-        will be an edge from X_i to X_j in the DAG (i.e. there will be a 1 in
-        position [i, j] in the DAG's adjacency matrix).
+        order provided i.e. for all :math:`j` such that :math:`j > i` in the
+        causal order, there will be an edge from :math:`X_i` to :math:`X_j` in
+        the DAG (i.e. there will be a 1 in position :math:`[i, j]` in the DAG's
+        adjacency matrix).
 
         Parameters
         ----------

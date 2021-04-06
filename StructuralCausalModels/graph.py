@@ -217,10 +217,11 @@ class Graph:
     # TODO test
     @staticmethod
     def compute_edge_type(m_ij, m_ji):
-        """Determines the type of the edge between X_i and X_j.
+        """Determines the type of the edge between two vertices.
 
-        Determines the type of the edge between X_i and X_j based on the values
-        of M[i, j] and M[j, i] where M is the adjacency matrix of the graph.
+        Determines the type of the edge between :math:`X_i` and :math:`X_j`
+        based on the values of :math:`M_{i,j}` and :math:`M_{j,i}` where
+        :math:`M` is the adjacency matrix of the graph.
 
         Parameters
         ----------
@@ -234,7 +235,7 @@ class Graph:
         Returns
         -------
         EdgeType
-            The typed edge between X_i and X_j in the graph.
+            The typed edge between :math:`X_i` and :math:`X_j` in the graph.
         """
 
         if m_ij == 0 and m_ji == 0:
@@ -271,9 +272,10 @@ class Graph:
         dict
             The typed edges.
 
-            The keys are tuples (i, j) ; they indicates the edge is between X_i
-            and X_j in the graph. The values are EdgeType objects which indicate
-            what type of edge is between X_i and X_j in the graph.
+            The keys are tuples (i, j) ; they indicates the edge is between
+            :math:`X_i` and :math:`X_j` in the graph. The values are
+            EdgeType objects which indicate what type of edge is between
+            :math:`X_i` and :math:`X_j` in the graph.
         """
 
         edges = dict()
@@ -297,9 +299,10 @@ class Graph:
         edges : dict
             The typed edges.
 
-            The keys are tuples (i, j) ; they indicates the edge is between X_i
-            and X_j in the graph. The values are EdgeType objects which indicate
-            what type of edge is between X_i and X_j in the graph.
+            The keys are tuples (i, j) ; they indicates the edge is between
+            :math:`X_i` and :math:`X_j` in the graph. The values are
+            EdgeType objects which indicate what type of edge is between
+            :math:`X_i` and :math:`X_j` in the graph.
 
         Returns
         -------
