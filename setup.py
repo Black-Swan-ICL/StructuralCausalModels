@@ -24,12 +24,13 @@ setup(
         'Intended Audience :: Science/Research',
     ],
     packages=find_packages(),
-    install_requires=['numpy', 'scipy', 'pandas', 'pytest'],
+    install_requires=['numpy', 'scipy', 'pandas', 'pytest', 'pytest-cov'],
     docs_extras=[
         'Sphinx >= 3.5.3',
         'numpy >= 1.20.1',
         'scipy > 1.6.2',
         'pandas >= 1.2.3',
         'pytest >= 6.2.2',
+        'pytest-cov>=2.11.1',
     ]
 )
