@@ -31,7 +31,7 @@ class DirectedAcyclicGraph(DirectedGraph):
     Parameters
     ----------
     adjacency_matrix : array_like
-        The adjacency matrix of the DAG.
+        The adjacency matrix of the graph.
     name : str, optional
         The name of the object created (default is '').
 

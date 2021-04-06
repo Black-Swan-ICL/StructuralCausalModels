@@ -6,6 +6,25 @@ from StructuralCausalModels.graph_via_adjacency_matrix import \
 
 
 class DirectedGraph(Graph):
+    """A class to represent directed graphs.
+
+    A DirectedGraph object is a representation of a directed graph. It is
+    defined by the adjacency matrix of the graph ; validation will be performed
+    to check that the graph defined is directed. An exception will be raised
+    otherwise.
+
+    Parameters
+    ----------
+    adjacency_matrix : array_like
+        The adjacency matrix of the graph.
+    name : str, optional
+        The name of the object created (default is '').
+
+    Raises
+    ------
+    InvalidAdjacencyMatrix
+        If the adjacency matrix does not define a directed graph.
+    """
 
     # TODO document
     def __init__(self, adjacency_matrix, name=''):
