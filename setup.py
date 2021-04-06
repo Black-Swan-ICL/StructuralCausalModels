@@ -27,11 +27,10 @@ setup(
     install_requires=['numpy', 'scipy', 'pandas', 'pytest'],
     docs_extras=[
         'Sphinx >= 3.5.3',
-        "sphinx.ext.napoleon",
         'numpy >= 1.20.1',
         'scipy > 1.6.2',
         'pandas >= 1.2.3',
         'pytest >= 6.2.2',
-        'mock >= 4.0.3'
+        # 'mock >= 4.0.3'
     ]
 )
