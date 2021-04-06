@@ -1,4 +1,4 @@
-![Build Status](https://github.com/Black-Swan-ICL/PySCMs/actions/workflows/pytesting_workflow/badge.svg)
+![Build Status](https://github.com/Black-Swan-ICL/PySCMs/actions/workflows/python-package.yml/badge.svg)
 
 
 # StructuralCausalModels
