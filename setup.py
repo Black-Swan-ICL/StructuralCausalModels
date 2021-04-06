@@ -31,6 +31,5 @@ setup(
         'scipy > 1.6.2',
         'pandas >= 1.2.3',
         'pytest >= 6.2.2',
-        # 'mock >= 4.0.3'
     ]
 )
