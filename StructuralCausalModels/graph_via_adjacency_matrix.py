@@ -2,12 +2,25 @@ import numpy as np
 
 
 class InvalidAdjacencyMatrix(Exception):
+    """Raised if the adjacency matrix does not contain only 0's and 1's.
+    """
     pass
 
 
 class GraphViaAdjacencyMatrix:
-    """
-    Implements a graph structure using an adjacency matrix representation.
+    """Implements a graph structure using an adjacency matrix representation.
+
+    Parameters
+    ----------
+    adjacency_matrix : array_like
+        The adjacency matrix of the graph.
+    name : str, optional
+        The name of the object created (default is '').
+
+    Raises
+    ------
+    InvalidAdjacencyMatrix
+        If the adjacency matrix provided does not contain only 0's and 1's.
     """
 
     def __init__(self, adjacency_matrix, name=''):

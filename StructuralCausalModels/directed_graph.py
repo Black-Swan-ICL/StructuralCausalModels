@@ -26,7 +26,6 @@ class DirectedGraph(Graph):
         If the adjacency matrix does not define a directed graph.
     """
 
-    # TODO document
     def __init__(self, adjacency_matrix, name=''):
 
         if not DirectedGraph.validate_directed_graph_adjacency_matrix(

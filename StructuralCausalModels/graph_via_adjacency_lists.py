@@ -1,13 +1,40 @@
 class InvalidAdjacencyLists(Exception):
+    """Raised when the adjacency lists are not valid for the graph.
+    """
     pass
 
 
 class GraphViaAdjacencyLists:
-    """
-    Implements a graph structure representing an adjacency list representation.
+    """Implements a graph structure using an adjacency list representation.
+
+    As an extra-security, the number of vertices must be provided as well as
+    the adjacency lists.
+
+    Parameters
+    ----------
+    nb_vertices : int
+        The number of vertices in the graph.
+    adjacency_lists : list
+        The list of adjacency lists defining the graph. The ordering in the list
+        is the natural one : adjacency_lists[0] is the adjacency list for vertex
+        X_0 etc.
+    name : str, optional
+        The name of the object created (default is '').
+
+    Attributes
+    ----------
+    indegrees : list
+        The list of in-degrees of the vertices i.e. the number of edges pointing
+        to the vertices. The ordering in the list is the natural one :
+        indegrees[0] is the in-degree for vertex X_0 etc.
+
+    Raises
+    ------
+    InvalidAdjacencyLists
+        If the number of adjacency lists provided does not match the number of
+        vertices in the graph.
     """
 
-    # TODO document
     def __init__(self, nb_vertices, adjacency_lists, name=''):
 
         if not len(adjacency_lists) == nb_vertices:
