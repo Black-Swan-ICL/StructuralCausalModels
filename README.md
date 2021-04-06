@@ -1,3 +1,7 @@
+![Build Status]
+(https://github.com/Black-Swan-ICL/PySCMs/workflows/pytesting_workflow/badge.svg)
+
+
 # StructuralCausalModels
 ## Description
 A Python package implementing Structural Causal Models (SCMs). 
