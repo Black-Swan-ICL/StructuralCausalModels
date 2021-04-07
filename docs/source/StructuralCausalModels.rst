@@ -1,14 +1,6 @@
 StructuralCausalModels package
 ==============================
 
-Subpackages
------------
-
-.. toctree::
-   :maxdepth: 4
-
-   StructuralCausalModels.test
-
 Submodules
 ----------
 
