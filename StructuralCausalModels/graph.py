@@ -292,7 +292,7 @@ class Graph:
     # TODO test
     @staticmethod
     def edges_to_adjacency_lists(edges):
-        """Converts the typed edges to the corresponding adjacency matrix.
+        """Converts the typed edges to the corresponding adjacency lists.
 
         Parameters
         ----------
@@ -306,8 +306,8 @@ class Graph:
 
         Returns
         -------
-        array_like
-            The adjacency matrix.
+        list
+            The adjacency lists.
         """
 
         parent_children = dict()
@@ -339,3 +339,59 @@ class Graph:
             adjacency_lists.append(parent_children[i])
 
         return adjacency_lists
+
+    # TODO test
+    @staticmethod
+    def edges_to_adjacency_matrix(edges):
+        """Converts the typed edges to the corresponding adjacency matrix.
+
+        Parameters
+        ----------
+        edges : dict
+            The typed edges.
+
+            The keys are tuples (i, j) ; they indicates the edge is between
+            :math:`X_i` and :math:`X_j` in the graph. The values are
+            EdgeType objects which indicate what type of edge is between
+            :math:`X_i` and :math:`X_j` in the graph.
+
+        Returns
+        -------
+        array_like
+            The adjacency matrix.
+        """
+        adjacency_lists = Graph.edges_to_adjacency_lists(edges=edges)
+        adjacency_matrix = Graph.adjacency_lists_to_adjacency_matrix(
+            adjacency_lists=adjacency_lists
+        )
+
+        return adjacency_matrix
+
+    # TODO test
+    @staticmethod
+    def adjacency_lists_to_edges(adjacency_lists):
+        """Converts adjacency lists to the corresponding typed edges..
+
+        Parameters
+        ----------
+        adjacency_lists : list
+            The adjacency lists.
+
+        Returns
+        -------
+        dict
+            The typed edges.
+
+            The keys are tuples (i, j) ; they indicates the edge is between
+            :math:`X_i` and :math:`X_j` in the graph. The values are
+            EdgeType objects which indicate what type of edge is between
+            :math:`X_i` and :math:`X_j` in the graph.
+        """
+        adjacency_matrix = Graph.adjacency_lists_to_adjacency_matrix(
+            adjacency_lists=adjacency_lists
+        )
+        edges = Graph.adjacency_matrix_to_edges(
+            adjacency_matrix=adjacency_matrix
+        )
+
+        return edges
