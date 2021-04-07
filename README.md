@@ -24,4 +24,4 @@ The representations implemented at present are:
   
 ## Documentation
 The documentation for the package is available 
-[here](https://pyscms.readthedocs.io/en/latest/).
+[here](https://pyscms.readthedocs.io/en/latest/modules.html).
