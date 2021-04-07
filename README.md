@@ -1,5 +1,4 @@
 ![Build Status](https://github.com/Black-Swan-ICL/PySCMs/actions/workflows/python-package.yml/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/Black-Swan-ICL/PySCMs/badge.svg?branch=main)](https://coveralls.io/github/Black-Swan-ICL/PySCMs?branch=main)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
