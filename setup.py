@@ -24,6 +24,7 @@ setup(
         'Intended Audience :: Science/Research',
     ],
     packages=find_packages(),
+    # TODO should pytest and pytest-cov not be separate ?
     install_requires=['numpy', 'scipy', 'pandas', 'pytest', 'pytest-cov'],
     docs_extras=[
         'Sphinx >= 3.5.3',
