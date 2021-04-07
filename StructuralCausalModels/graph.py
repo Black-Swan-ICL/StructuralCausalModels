@@ -214,7 +214,6 @@ class Graph:
 
         return adjacency_matrix
 
-    # TODO test
     @staticmethod
     def compute_edge_type(m_ij, m_ji):
         """Determines the type of the edge between two vertices.
@@ -289,7 +288,6 @@ class Graph:
 
         return edges
 
-    # TODO test
     @staticmethod
     def edges_to_adjacency_lists(edges):
         """Converts the typed edges to the corresponding adjacency lists.
@@ -340,7 +338,6 @@ class Graph:
 
         return adjacency_lists
 
-    # TODO test
     @staticmethod
     def edges_to_adjacency_matrix(edges):
         """Converts the typed edges to the corresponding adjacency matrix.
@@ -367,7 +364,6 @@ class Graph:
 
         return adjacency_matrix
 
-    # TODO test
     @staticmethod
     def adjacency_lists_to_edges(adjacency_lists):
         """Converts adjacency lists to the corresponding typed edges..
