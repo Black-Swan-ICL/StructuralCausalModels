@@ -90,18 +90,9 @@ class StructuralCausalModel:
             columns=columns
         )
         data.values[:] = np.nan
-        # TODO this is actually a dangerous way to do things ! The equations
-        #  should be taken in a causal order. To illustrate, consider the
-        #  following SCM : X_0 := U_0, X_1 := U_1, X_2 := U_2, X_3 :=
-        #  alpha_{0, 3} * X_0 + alpha_{1, 3} * X_1 + U_3, X_4 := alpha_{1, 4} *
-        #  X_1 + U_4, X_5 := alpha_{4, 5} * X_4 + alpha_{6, 5} * X_6 + U_5, X_6
-        #  := alpha_{2, 6} * X_2 + U_6. If the equation for X_5 is encountered
-        #  by the loop before the equation for X_6, this will fuck things up.
-        #  Considering I use a np.empty there will be no crash of the code as
-        #  there WILL BE values for X_6 - except they are nonsensical !
+
         ordered_structural_equations = self.order_structural_equations()
         for structural_equation in ordered_structural_equations:
-        # for structural_equation in self.structural_equations:
             data = structural_equation.generate_data(data)
 
         return data
@@ -135,10 +126,13 @@ class StructuralCausalModel:
     #  times, by making it an attribute set at construction ?
 
     # TODO test
-    # TODO document
     def compute_causal_order(self):
         """Computes a causal order of the DAG associated to the SCM.
 
+        Returns
+        -------
+        list
+            A causal order of the DAG associated to the SCM.
         """
         adjacency_matrix = self.adjacency_matrix()
         scm_dag = DirectedAcyclicGraph(adjacency_matrix=adjacency_matrix)
@@ -146,11 +140,19 @@ class StructuralCausalModel:
 
         return causal_order
 
-    # TODO document
     # TODO test
     def order_structural_equations(self):
         """Returns structural equations, ordered to follow a causal order.
 
+        The structural equations may or may not be provided in an order that is
+        consistent with a causal ordering of the DAG associated to the SCM. This
+        function returns the list of structural equations ordered in a manner
+        consistent with a causal ordering of the associated DAG.
+
+        Returns
+        -------
+        list
+            The structural equations making up the SCM, causally ordered.
         """
         causal_order = self.compute_causal_order()
         structural_equation_dic = {eqn.index_lhs: eqn for eqn in
