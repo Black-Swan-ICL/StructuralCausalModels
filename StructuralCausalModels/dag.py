@@ -154,14 +154,14 @@ class DirectedAcyclicGraph(DirectedGraph):
     #
     #     return topological_ordering
 
-    def compute_causal_order(self, method):
+    def compute_causal_order(self, method='kahn'):
         """
         Computes a causal order of the DAG using the method chosen by the user.
 
         Parameters
         ----------
-        method : str
-            The method to use to compute the causal order.
+        method : str, optional
+            The method to use to compute the causal order (default is 'kahn').
 
         Returns
         -------
