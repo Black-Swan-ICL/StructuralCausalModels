@@ -89,7 +89,19 @@ class StructuralCausalModel:
             index=index,
             columns=columns
         )
-        for structural_equation in self.structural_equations:
+        data.values[:] = np.nan
+        # TODO this is actually a dangerous way to do things ! The equations
+        #  should be taken in a causal order. To illustrate, consider the
+        #  following SCM : X_0 := U_0, X_1 := U_1, X_2 := U_2, X_3 :=
+        #  alpha_{0, 3} * X_0 + alpha_{1, 3} * X_1 + U_3, X_4 := alpha_{1, 4} *
+        #  X_1 + U_4, X_5 := alpha_{4, 5} * X_4 + alpha_{6, 5} * X_6 + U_5, X_6
+        #  := alpha_{2, 6} * X_2 + U_6. If the equation for X_5 is encountered
+        #  by the loop before the equation for X_6, this will fuck things up.
+        #  Considering I use a np.empty there will be no crash of the code as
+        #  there WILL BE values for X_6 - except they are nonsensical !
+        ordered_structural_equations = self.order_structural_equations()
+        for structural_equation in ordered_structural_equations:
+        # for structural_equation in self.structural_equations:
             data = structural_equation.generate_data(data)
 
         return data
@@ -118,6 +130,36 @@ class StructuralCausalModel:
         adjacency_matrix = adjacency_matrix.astype(int)
 
         return adjacency_matrix
+
+    # TODO for large graphs, may be worth avoiding to compute adj. mat several
+    #  times, by making it an attribute set at construction ?
+
+    # TODO test
+    # TODO document
+    def compute_causal_order(self):
+        """Computes a causal order of the DAG associated to the SCM.
+
+        """
+        adjacency_matrix = self.adjacency_matrix()
+        scm_dag = DirectedAcyclicGraph(adjacency_matrix=adjacency_matrix)
+        causal_order = scm_dag.compute_causal_order()
+
+        return causal_order
+
+    # TODO document
+    # TODO test
+    def order_structural_equations(self):
+        """Returns structural equations, ordered to follow a causal order.
+
+        """
+        causal_order = self.compute_causal_order()
+        structural_equation_dic = {eqn.index_lhs: eqn for eqn in
+                                   self.structural_equations}
+        ordered_structural_equations = []
+        for i in causal_order:
+            ordered_structural_equations.append(structural_equation_dic[i])
+
+        return ordered_structural_equations
 
     def check_no_cycles(self, atol=1e-6):
         """Checks that the SCM defined is not cyclic.
@@ -201,3 +243,105 @@ class StructuralCausalModel:
         new_scm.check_no_cycles()
 
         return new_scm
+
+
+if __name__ == '__main__':
+
+    from StructuralCausalModels.structural_equation import StructuralEquation
+    from scipy.stats import t
+
+    epsilons = [t(loc=0, scale=1, df=10)] * 7
+    coefficients = np.asarray([
+        [0, 0, 0, 2, 0, 0, 0],
+        [0, 0, 0, 3, 4, 0, 0],
+        [0, 0, 0, 0, 0, 0, 6],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 5, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 7, 0]
+    ])
+
+    def f_0(u0, *args):
+        return u0
+
+
+    equation_x0 = StructuralEquation(index_lhs=0,
+                                     indices_rhs=[],
+                                     exogenous_variable=epsilons[0],
+                                     function=f_0)
+
+
+    def f_1(u1, *args):
+        return u1
+
+
+    equation_x1 = StructuralEquation(index_lhs=1,
+                                     indices_rhs=[],
+                                     exogenous_variable=epsilons[1],
+                                     function=f_1)
+
+
+    def f_2(u2, *args):
+        return u2
+
+
+    equation_x2 = StructuralEquation(index_lhs=2,
+                                     indices_rhs=[],
+                                     exogenous_variable=epsilons[2],
+                                     function=f_2)
+
+
+    def f_3(u3, x0, x1):
+        return u3 + coefficients[0, 3] * x0 + coefficients[1, 3] * x1
+
+
+    equation_x3 = StructuralEquation(index_lhs=3,
+                                     indices_rhs=[0, 1],
+                                     exogenous_variable=epsilons[3],
+                                     function=f_3)
+
+
+    def f_4(u4, x1):
+        return u4 + coefficients[1, 4] * x1
+
+
+    equation_x4 = StructuralEquation(index_lhs=4,
+                                     indices_rhs=[1],
+                                     exogenous_variable=epsilons[4],
+                                     function=f_4)
+
+
+    def f_5(u5, x4, x6):
+
+        return u5 + coefficients[4, 5] * x4 + coefficients[6, 5] * x6
+
+
+    equation_x5 = StructuralEquation(index_lhs=5,
+                                     indices_rhs=[4, 6],
+                                     exogenous_variable=epsilons[5],
+                                     function=f_5)
+
+
+    def f_6(u6, x2):
+        return u6 + coefficients[2, 6] * x2
+
+
+    equation_x6 = StructuralEquation(index_lhs=6,
+                                     indices_rhs=[2],
+                                     exogenous_variable=epsilons[6],
+                                     function=f_6)
+
+    structural_equations = [
+        equation_x0,
+        equation_x1,
+        equation_x2,
+        equation_x3,
+        equation_x4,
+        equation_x5,
+        equation_x6
+    ]
+    scm = StructuralCausalModel(name='experiment2',
+                                nb_var=7,
+                                structural_equations=structural_equations)
+
+    print(scm.generate_data(nb_samples=20))
