@@ -128,6 +128,15 @@ class Graph:
         self.adjacency_list_representation = new_list_based
         self.edge_representation = new_edge_based
 
+    # TODO document
+    # TODO test
+    def remove_directed_edge(self, i, j):
+        """Removes the directed edge :math:`i \rightarrow j` from the graph.
+
+        """
+
+        pass
+
     def structural_hamming_distance(self,
                                     other,
                                     penalty_edge_mismatch_func=None):
