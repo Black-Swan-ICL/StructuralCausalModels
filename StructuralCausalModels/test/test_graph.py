@@ -1,5 +1,6 @@
 # TODO reorganise and document
 import pytest
+import copy
 import numpy as np
 
 from StructuralCausalModels.graph import Graph, EdgeType, \
@@ -34,6 +35,24 @@ _adjacency_lists = [
 def test_validate_adjacency_matrix(matrix, expected):
 
     assert Graph.validate_binary_matrix(matrix) == expected
+
+
+def test_remove_directed_edge():
+
+    adjacency_matrix = np.asarray([
+        [0, 1, 1, 1],
+        [0, 0, 1, 0],
+        [0, 0, 0, 0],
+        [0, 1, 1, 0]
+    ])
+    graph = Graph(adjacency_matrix=adjacency_matrix)
+
+    parent_node = 0
+    child_node = 3
+    adjacency_matrix[parent_node, child_node] = 0
+    graph.remove_directed_edge(i=parent_node, j=child_node)
+
+    assert np.equal(adjacency_matrix, graph.adjacency_matrix).all()
 
 
 @pytest.mark.parametrize(
